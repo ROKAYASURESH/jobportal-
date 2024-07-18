@@ -129,3 +129,32 @@ def RECRUITER_LOGIN(request):
     }
     return render(request, 'auth/recruiter/recruiter_login.html', context)
 
+'''=================================================================
+                    ADMIN
+   =================================================================
+'''
+def ADMIN_LOGIN(request):
+    error = ''
+    if request.method == "POST":
+        username=request.POST['username']
+        password=request.POST['password']
+        user = authenticate(username=username, password=password)
+        
+        try:
+            if user.is_staff:
+                login(request, user)
+                error='no'
+            else:
+                error='yes'
+        except:
+            error='yes'
+    context={
+        'error':error
+    }
+
+    return render(request, 'auth/admin_auth/admin_login.html', context)
+
+# VIES USER
+def VIEWS_USERS(request):
+    return render(request, "main/admin/views_user.html")
+
