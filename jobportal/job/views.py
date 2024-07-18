@@ -156,5 +156,28 @@ def ADMIN_LOGIN(request):
 
 # VIES USER
 def VIEWS_USERS(request):
-    return render(request, "main/admin/views_user.html")
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    data = StudentUser.objects.all()
 
+    context={
+        'data':data
+    }
+    return render(request, "main/admin/views_user.html", context)
+
+def DELETE_USER(request, id):
+    data =StudentUser.objects.get(id=id)
+    data.delete()
+    return redirect('views_user')
+
+
+def recruiter_pending(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    
+    data =Recruiter.objects.filter(status='pending')
+
+    context={
+        'data':data
+    }
+    return render(request, "main/admin/recruiter_pending.html", context)

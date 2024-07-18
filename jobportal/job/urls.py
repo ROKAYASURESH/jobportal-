@@ -16,4 +16,6 @@ urlpatterns = [
     # ADMIN
     path('admin_login/',  ADMIN_LOGIN, name='admin_login'),
     path('views_user/',  VIEWS_USERS, name='views_user'),
+    path('delete_user/<int:id>',  DELETE_USER, name='delete_user'),
+    path('recruiter_pending',  recruiter_pending, name='recruiter_pending'),
 ]

@@ -21,6 +21,7 @@
                     <th>Email</th>
                     <th>Contact</th>
                     <th>Gender</th>
+                    <th>Copnay</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
@@ -33,6 +34,7 @@
                     <td>{{ i.user.username }}</td>
                     <td>{{ i.mobile }}</td>
                     <td>{{ i.gender }}</td>
+                    <td>{{ i.company }}</td>
                     <td><img src="{{ i.image.url }}" alt="" width="80"></td>
                     <td><a href="{% url 'delete_user' i.id %}" class="btn btn-danger" onclick="return confirm('Are You sure ?')">Delete</a></td>
                 </tr>
