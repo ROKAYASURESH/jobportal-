@@ -78,3 +78,54 @@ def USER_LOGOUT(request):
                     RECURATOR START
    =================================================================
 '''
+
+def RECRUITER_SIGNUP(request):
+    error = " "
+    if request.method == "POST" and request.FILES:
+        firstname=request.POST['first_name']
+        lastname=request.POST['last_name']
+        image=request.FILES['image']
+        password=request.POST['password']
+        # confirm_password=request.POST['confirm_password']
+        email=request.POST['email']
+        contact=request.POST['contact']
+        gender=request.POST['gender']
+        company=request.POST['company']
+
+        try:
+            user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
+            Recruiter.objects.create(user=user, mobile=contact, image=image, gender=gender, company=company, type='recruiter', status='pending')
+            error='No'
+        except:
+            error="yes"
+
+    context={
+        'error':error
+    }    
+    return render(request, 'auth/recruiter/recruiter_signup.html', context)
+
+
+def RECRUITER_LOGIN(request):
+    error = " "
+    if request.method == "POST":
+        username=request.POST['username']
+        password=request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            try:
+                user1 = Recruiter.objects.get(user=user)
+                if user1.type == 'recruiter' and user1.status!='pending':
+                    login(request, user)
+                    error='no'
+                else:
+                    error = 'not'
+            except:
+                error = 'yes'
+        else:
+            error = 'yes'
+
+    context={
+        'error':error
+    }
+    return render(request, 'auth/recruiter/recruiter_login.html', context)
+

@@ -10,4 +10,7 @@ urlpatterns = [
     path('user_signup/',  SIGN_UP, name='user_signup'),
     path('user_login/',  USER_LOGIN, name='user_login'),
     path('logout/',  USER_LOGOUT, name='logout'),
+    # RECRUITER AUTHENTICATION
+    path('recruiter_signup/',  RECRUITER_SIGNUP, name='recruiter_signup'),
+    path('recruiter_login/',  RECRUITER_LOGIN, name='recruiter_login'),
 ]
