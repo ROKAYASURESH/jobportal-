@@ -181,3 +181,23 @@ def recruiter_pending(request):
         'data':data
     }
     return render(request, "main/admin/recruiter_pending.html", context)
+
+def CHANGE_STATUS(request, id):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    
+    error=''
+    recruiter =Recruiter.objects.get(id=id)
+    if request.method == "POST":
+        status=request.POST['status']
+        recruiter.status = status
+        try:
+            recruiter.save()
+            error='no'
+        except:
+            error='yes'
+    context={
+        'recruiter':recruiter,
+        'error':error
+    }
+    return render(request, "main/admin/change_status.html", context)
