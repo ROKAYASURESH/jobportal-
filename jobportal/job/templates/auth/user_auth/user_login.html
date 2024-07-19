@@ -146,7 +146,7 @@
     <form class="form"  method="post" action=""
       enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="column">
+     
         <div class="input-box">
           <label>Email</label>
           <input type="email" name="username" placeholder="Enter first_name" required />
@@ -156,8 +156,7 @@
           <label>password</label>
           <input type="password" name="password" placeholder="Enter last_name" required />
         </div>
-      </div>
-
+     
    
       <button type="submit">Submit</button>
     </form>

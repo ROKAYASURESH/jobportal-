@@ -3,16 +3,23 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 # Create your views here.
+def JOB_USER(request):
+    return render(request, 'base/common.html')
+
 def HOME(request):
+    return render(request, 'main/home.html')
+
+def JOB(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
-    return render(request, 'main/home.html')
-def JOB(request):
     return render(request, 'main/job.html')
+
 def ABOUT(request):
     return render(request, 'main/about.html')
+
 def CONTACT(request):
     return render(request, 'main/contact.html')
+
 def JOB_DETAILS(request):
     return render(request, 'main/job_details.html')
 
@@ -20,6 +27,7 @@ def JOB_DETAILS(request):
                     USER_AUTHENTICATION START
    =================================================================
 '''
+# User_Register
 def SIGN_UP(request):
     error = " "
     if request.method == "POST" and request.FILES:
@@ -44,7 +52,7 @@ def SIGN_UP(request):
     }      
     return render(request, 'auth/user_auth/user_signup.html', context)
 
-
+# User_Login
 def USER_LOGIN(request):
     error = " "
     if request.method == "POST":
@@ -69,6 +77,7 @@ def USER_LOGIN(request):
     }
     return render(request, 'auth/user_auth/user_login.html', context)
 
+# Logout
 def USER_LOGOUT(request):
     logout(request)
     return redirect('user_login')
@@ -78,7 +87,7 @@ def USER_LOGOUT(request):
                     RECURATOR START
    =================================================================
 '''
-
+# Recurator_register
 def RECRUITER_SIGNUP(request):
     error = " "
     if request.method == "POST" and request.FILES:
@@ -104,7 +113,7 @@ def RECRUITER_SIGNUP(request):
     }    
     return render(request, 'auth/recruiter/recruiter_signup.html', context)
 
-
+# Recrutier_login
 def RECRUITER_LOGIN(request):
     error = " "
     if request.method == "POST":
@@ -133,6 +142,7 @@ def RECRUITER_LOGIN(request):
                     ADMIN
    =================================================================
 '''
+# Admin_Login
 def ADMIN_LOGIN(request):
     error = ''
     if request.method == "POST":
@@ -154,7 +164,7 @@ def ADMIN_LOGIN(request):
 
     return render(request, 'auth/admin_auth/admin_login.html', context)
 
-# VIES USER
+# Recuiter User Data
 def VIEWS_USERS(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
@@ -165,12 +175,13 @@ def VIEWS_USERS(request):
     }
     return render(request, "main/admin/views_user.html", context)
 
+# Recruiter_user_Delete
 def DELETE_USER(request, id):
     data =StudentUser.objects.get(id=id)
     data.delete()
     return redirect('views_user')
 
-
+# Recuiter Pending Data Show
 def recruiter_pending(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
@@ -182,6 +193,7 @@ def recruiter_pending(request):
     }
     return render(request, "main/admin/recruiter_pending.html", context)
 
+# Change_Status
 def CHANGE_STATUS(request, id):
     if not request.user.is_authenticated:
         return redirect('admin_login')
@@ -201,3 +213,5 @@ def CHANGE_STATUS(request, id):
         'error':error
     }
     return render(request, "main/admin/change_status.html", context)
+
+

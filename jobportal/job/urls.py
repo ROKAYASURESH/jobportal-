@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 urlpatterns = [
+    path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
     path('job/', JOB, name='job'),
     path('about/', ABOUT, name='about'),
