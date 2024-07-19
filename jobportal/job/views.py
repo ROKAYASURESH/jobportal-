@@ -190,9 +190,7 @@ def DELETE_USER(request, id):
 def recruiter_pending(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    
     data =Recruiter.objects.filter(status='pending')
-
     context={
         'data':data
     }
@@ -202,13 +200,31 @@ def recruiter_pending(request):
 def emplpyer_accept(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    
     data =Recruiter.objects.filter(status='Accept')
-
     context={
         'data':data
     }
     return render(request, "main/admin/employer_accept.html", context)
+
+# Employer Reject Data Show
+def employer_reject(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    data =Recruiter.objects.filter(status='Reject')
+    context={
+        'data':data
+    }
+    return render(request, "main/admin/employer_reject.html", context)
+
+# Employer employer_all Data Show
+def employer_all(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    data =Recruiter.objects.all()
+    context={
+        'data':data
+    }
+    return render(request, "main/admin/employer_reject.html", context)
 
 # Change_Status
 def CHANGE_STATUS(request, id):

@@ -21,6 +21,8 @@ urlpatterns = [
     path('delete_user/<int:id>',  DELETE_USER, name='delete_user'),
     path('recruiter_pending',  recruiter_pending, name='recruiter_pending'),
     path('emplpyer_accept',  emplpyer_accept, name='emplpyer_accept'),
+    path('eemployer_reject',  employer_reject, name='employer_reject'),
+    path('eemployer_all',  employer_all, name='employer_all'),
     path('change_status/<int:id>',  CHANGE_STATUS, name='change_status'),
     
 
