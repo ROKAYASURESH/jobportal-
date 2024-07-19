@@ -166,8 +166,12 @@ def ADMIN_LOGIN(request):
     context={
         'error':error
     }
-
     return render(request, 'auth/admin_auth/admin_login.html', context)
+
+# Logout
+def ADMIN_LOGOUT(request):
+    logout(request)
+    return redirect('admin_login')
 
 # User Data
 def VIEWS_USERS(request):
