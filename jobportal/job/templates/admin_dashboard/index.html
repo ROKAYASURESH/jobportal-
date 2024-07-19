@@ -42,7 +42,7 @@
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><a class="dropdown-item" href="#!">Change_password</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -71,7 +71,6 @@
                         <div class="collapse" id="employerLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="{% url 'views_user' %}">Employer User</a>
                                 <a class="nav-link" href="{% url 'recruiter_pending' %}">Pending Employer</a>
                                 <a class="nav-link" href="{% url 'emplpyer_accept' %}">Accept Employer</a>
                                 <a class="nav-link" href="{% url 'employer_reject' %}">Reject Employer</a>
@@ -87,6 +86,7 @@
                         <div class="collapse" id="jobSeekerLayout" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'views_user' %}">Jobseeker</a>
                                 <a class="nav-link" href="layout-static.html">Static Navigation</a>
                                 <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                             </nav>

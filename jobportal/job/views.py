@@ -169,20 +169,19 @@ def ADMIN_LOGIN(request):
 
     return render(request, 'auth/admin_auth/admin_login.html', context)
 
-# Recuiter User Data
+# User Data
 def VIEWS_USERS(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
     data = StudentUser.objects.all()
-
     context={
         'data':data
     }
     return render(request, "main/admin/views_user.html", context)
 
-# Recruiter_user_Delete
+# user_Delete
 def DELETE_USER(request, id):
-    data =StudentUser.objects.get(id=id)
+    data =User.objects.get(id=id)
     data.delete()
     return redirect('views_user')
 
@@ -195,6 +194,28 @@ def recruiter_pending(request):
         'data':data
     }
     return render(request, "main/admin/recruiter_pending.html", context)
+
+# Change_Status
+def CHANGE_STATUS(request, id):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    
+    error=''
+    recruiter =Recruiter.objects.get(id=id)
+    if request.method == "POST":
+        status=request.POST['status']
+        recruiter.status = status
+        try:
+            recruiter.save()
+            error='no'
+        except:
+            error='yes'
+    context={
+        'recruiter':recruiter,
+        'error':error
+    }
+    return render(request, "main/admin/change_status.html", context)
+
 
 # Employer Accepted Data Show
 def emplpyer_accept(request):
@@ -224,27 +245,11 @@ def employer_all(request):
     context={
         'data':data
     }
-    return render(request, "main/admin/employer_reject.html", context)
+    return render(request, "main/admin/employer_all.html", context)
 
-# Change_Status
-def CHANGE_STATUS(request, id):
-    if not request.user.is_authenticated:
-        return redirect('admin_login')
-    
-    error=''
-    recruiter =Recruiter.objects.get(id=id)
-    if request.method == "POST":
-        status=request.POST['status']
-        recruiter.status = status
-        try:
-            recruiter.save()
-            error='no'
-        except:
-            error='yes'
-    context={
-        'recruiter':recruiter,
-        'error':error
-    }
-    return render(request, "main/admin/change_status.html", context)
 
+def DELETE_EMPLOYER(request, id):
+    data =User.objects.get(id=id)
+    data.delete()
+    return redirect('employer_all')
 

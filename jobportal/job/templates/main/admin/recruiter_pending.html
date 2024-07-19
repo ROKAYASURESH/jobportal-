@@ -20,7 +20,6 @@
                         <th>Copmay</th>
                         <th>Status</th>
                         <th>Image</th>
-                        <th>Action</th>
                         <th>status change</th>
                     </tr>
                 </thead>
@@ -35,7 +34,7 @@
                         <td>{{ i.company }}</td>
                        <td>{{ i.status }}</td>
                         <td><img src="{{ i.image.url }}" alt="" width="80"></td>
-                        <td><a href="{% url 'delete_user' i.id %}" class="btn btn-danger" onclick="return confirm('Are You sure ?')">Delete</a></td>
+                        <!-- <td><a href="{% url 'delete_employer' i.user.id %}" class="btn btn-danger" onclick="return confirm('Are You sure ?')">Delete</a></td> -->
                         <td><a href="{% url 'change_status' i.id %}" class="btn btn-success" >Change Status</a></td>
                     </tr>
                     {% endfor %}

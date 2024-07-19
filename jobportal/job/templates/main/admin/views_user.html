@@ -5,7 +5,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            Employer User Data Show
+            Jobseeker User Data Show
         </div>
         <div class="card-body">
         <table id="example" class="display nowrap">
@@ -29,7 +29,7 @@
                     <td>{{ i.mobile }}</td>
                     <td>{{ i.gender }}</td>
                     <td><img src="{{ i.image.url }}" alt="" width="80"></td>
-                    <td><a href="{% url 'delete_user' i.id %}" class="btn btn-danger" onclick="return confirm('Are You sure ?')">Delete</a></td>
+                    <td><a href="{% url 'delete_user' i.user.id %}" class="btn btn-danger" onclick="return confirm('Are You sure ?')">Delete</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
