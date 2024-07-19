@@ -142,6 +142,11 @@ def RECRUITER_LOGIN(request):
                     ADMIN
    =================================================================
 '''
+# ADMIN_DASHBOARD:
+def ADMIN_DASHBOARD(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    return render(request, "admin_dashboard/main.html")
 # Admin_Login
 def ADMIN_LOGIN(request):
     error = ''

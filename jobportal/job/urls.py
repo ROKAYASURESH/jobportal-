@@ -15,6 +15,7 @@ urlpatterns = [
     path('recruiter_signup/',  RECRUITER_SIGNUP, name='recruiter_signup'),
     path('recruiter_login/',  RECRUITER_LOGIN, name='recruiter_login'),
     # ADMIN
+    path('admin_dashboard/',  ADMIN_DASHBOARD, name='admin_dashboard'),
     path('admin_login/',  ADMIN_LOGIN, name='admin_login'),
     path('views_user/',  VIEWS_USERS, name='views_user'),
     path('delete_user/<int:id>',  DELETE_USER, name='delete_user'),
