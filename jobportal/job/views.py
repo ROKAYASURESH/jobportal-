@@ -198,6 +198,18 @@ def recruiter_pending(request):
     }
     return render(request, "main/admin/recruiter_pending.html", context)
 
+# Employer Accepted Data Show
+def emplpyer_accept(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    
+    data =Recruiter.objects.filter(status='Accept')
+
+    context={
+        'data':data
+    }
+    return render(request, "main/admin/employer_accept.html", context)
+
 # Change_Status
 def CHANGE_STATUS(request, id):
     if not request.user.is_authenticated:

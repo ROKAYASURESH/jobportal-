@@ -20,6 +20,8 @@ urlpatterns = [
     path('views_user/',  VIEWS_USERS, name='views_user'),
     path('delete_user/<int:id>',  DELETE_USER, name='delete_user'),
     path('recruiter_pending',  recruiter_pending, name='recruiter_pending'),
+    path('emplpyer_accept',  emplpyer_accept, name='emplpyer_accept'),
     path('change_status/<int:id>',  CHANGE_STATUS, name='change_status'),
+    
 
 ]
