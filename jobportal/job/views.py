@@ -303,4 +303,55 @@ def ADD_JOB(request):
 
 
 def job_list(request):
-    return render(request, "main/employer/job_list.html")
+    employer = Recruiter.objects.get(user=request.user)
+    job = Job.objects.filter(recruiter=employer)
+    context={
+        'job':job
+    }
+    return render(request, "main/employer/job_list.html" ,context)
+
+
+def edit_jobdetails(request, id):
+    job = Job.objects.get(id=id)
+    if request.method =="POST":
+        job.title= request.POST['job_title']
+        start_date= request.POST['start_date']
+        end_date= request.POST['end_date']
+        job.salary= request.POST['salary']
+        image= request.POST['image']
+        
+        job.des= request.POST['desc']
+        job.experience= request.POST['experience']
+        job.location= request.POST['location']
+        job.skills= request.POST['skill']
+        
+        try:
+            job.save()
+            messages.success(request, 'Job Detail has been updated')
+            return redirect('home')
+        except ObjectDoesNotExist:
+            messages.error(request, "Recruiter matching query does not exist.")
+        except Exception as e:
+            messages.error(request, f"Something went wrong: {str(e)}")
+        
+        if start_date:
+            job.start_date=start_date
+            job.save()
+        else:
+            pass
+        if end_date:
+            job.end_date=end_date
+            job.save()
+
+        else:
+            pass
+        if image:
+            job.image=image
+            job.save()
+
+        else:
+            pass
+    context={
+        'job':job,
+    }
+    return render(request, "main/employer/edit_jobDetail.html", context)
