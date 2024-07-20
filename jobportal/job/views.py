@@ -257,3 +257,18 @@ def DELETE_EMPLOYER(request, id):
     data.delete()
     return redirect('employer_all')
 
+from django.contrib.auth.forms import PasswordChangeForm
+
+def password_change(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    user_form=PasswordChangeForm(user=request.user)
+    if request.method =='POST':
+        user_form=PasswordChangeForm(user=request.user, data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('user_login')
+    context={
+        "user_form":user_form
+    }
+    return render(request, "main/change_password.html", context)

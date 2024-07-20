@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+
 urlpatterns = [
     path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
@@ -32,6 +33,5 @@ urlpatterns = [
     path('employer_all',  employer_all, name='employer_all'),
     path('delete_employer<int:id>',  DELETE_EMPLOYER, name='delete_employer'),
     
-    
-
+    path('password_change/' , password_change, name="password_change")
 ]
