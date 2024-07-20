@@ -35,7 +35,7 @@ class Job(models.Model):
     experience=models.CharField(max_length=100)
     location=models.CharField(max_length=150)
     skills=models.CharField(max_length=200, )
-    creationdate=models.DateField()
+    creationdate=models.DateField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.title

@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 from .models import *
+from datetime import datetime
 # Create your views here.
 def JOB_USER(request):
     return render(request, 'base/common.html')
@@ -272,3 +275,32 @@ def password_change(request):
         "user_form":user_form
     }
     return render(request, "main/change_password.html", context)
+
+
+# EMPLOYER
+def ADD_JOB(request):
+    if request.method =="POST":
+        job_title= request.POST['job_title']
+        start_date= request.POST['start_date']
+        end_date= request.POST['end_date']
+        salary= request.POST['salary']
+        image=request.FILES ['image']
+        des= request.POST['desc']
+        experience= request.POST['experience']
+        location= request.POST['location']
+        skills= request.POST['skill']
+        employer=Recruiter.objects.get(user=request.user)
+        try:
+            Job.objects.create(recruiter=employer, title=job_title, start_date=start_date, end_date=end_date, salary=salary, image=image, des=des, 
+                           experience=experience, location=location, skills=skills )
+            messages.success(request, 'Job Detail has been added')
+            return redirect('home')
+        except ObjectDoesNotExist:
+            messages.error(request, "Recruiter matching query does not exist.")
+        except Exception as e:
+            messages.error(request, f"Something went wrong: {str(e)}")
+    return render(request, "main/employer/emp_job.html")
+
+
+def job_list(request):
+    return render(request, "main/employer/job_list.html")
