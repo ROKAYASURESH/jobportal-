@@ -259,7 +259,7 @@
                                     </div>
                                 </div>
                                 <div class="items-link items-link2 f-right">
-                                    <a href="job_details.html">Apply Now</a>
+                                    <a href="{% url 'job_details' i.id %}" >Apply Now</a>
                                     <span>Date Line: {{i.end_date}}</span>
                                 </div>
                             </div>
@@ -288,6 +288,8 @@
                             </div>
                         </div>
                     </section>
+
+
                     <!-- Featured_job_end -->
                 </div>
             </div>

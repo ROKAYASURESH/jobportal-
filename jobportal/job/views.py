@@ -13,7 +13,24 @@ def JOB_USER(request):
     return render(request, 'base/common.html')
 
 def HOME(request):
-    return render(request, 'main/home.html')
+    user = request.user
+    job = Job.objects.all()
+    list = []
+
+    try:
+        jobseeker = StudentUser.objects.get(user=user)
+        data = Apply.objects.filter(jobseeker=jobseeker)
+        for i in data:
+            list.append(i.job.id)
+    except StudentUser.DoesNotExist:
+        jobseeker = None
+        list = []
+
+    context = {
+        'job': job,
+        'list': list,
+    }
+    return render(request, 'main/home.html', context)
 
 def JOB(request):
     # if not request.user.is_authenticated:
@@ -51,8 +68,12 @@ def ABOUT(request):
 def CONTACT(request):
     return render(request, 'main/contact.html')
 
-def JOB_DETAILS(request):
-    return render(request, 'main/job_details.html')
+def JOB_DETAILS(request, id):
+    job=Job.objects.get(id=id)
+    context={
+        'job':job
+    }
+    return render(request, 'main/job_details.html', context)
 
 '''=================================================================
                     USER_AUTHENTICATION START
@@ -383,3 +404,8 @@ def edit_jobdetails(request, id):
         'job':job,
     }
     return render(request, "main/employer/edit_jobDetail.html", context)
+
+
+# APPLY for a job
+def apply(request, id):
+    return render(request, "main/apply.html")

@@ -34,12 +34,12 @@
                             </div>
                             <div class="job-tittle">
                                 <a href="#">
-                                    <h4>Digital Marketer</h4>
+                                    <h4>{{job.title}}</h4>
                                 </a>
                                 <ul>
-                                    <li>Creative Agency</li>
-                                    <li><i class="fas fa-map-marker-alt"></i>Athens, Greece</li>
-                                    <li>$3500 - $4000</li>
+                                    <li>{{job.recruiter.company}}</li>
+                                    <li><i class="fas fa-map-marker-alt"></i>{{job.location}}</li>
+                                    <li>{{job.job_type.job_type}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             <div class="small-section-tittle">
                                 <h4>Job Description</h4>
                             </div>
-                            <p>It is a long established fact that a reader will beff distracted by vbthe creadable content of a page when looking at its layout. The pointf of using Lorem Ipsum is that it has ahf mcore or-lgess normal distribution of letters, as opposed to using, Content here content here making it look like readable.</p>
+                            <p>{{job.des}}</p>
                         </div>
                         <div class="post-details2  mb-50">
                              <!-- Small Section Tittle -->
@@ -99,7 +99,9 @@
                           <li>Application date : <span>12 Sep 2020</span></li>
                       </ul>
                      <div class="apply-btn2">
-                        <a href="#" class="btn">Apply Now</a>
+                        <a href="{% url 'job_details' job.id %}" class="btn border btn-success"  data-bs-toggle="modal" data-bs-target="#exampleModal">Apply Now</a>
+
+                        <!-- <a href="#" class="btn">Apply Now</a> -->
                      </div>
                    </div>
                     <div class="post-details4  mb-50">
@@ -122,5 +124,5 @@
     <!-- job post company End -->
 
 </main>
-
+{% include 'main/apply.html'%}
 {% endblock %}

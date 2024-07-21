@@ -7,7 +7,7 @@ urlpatterns = [
     path('job/', JOB, name='job'),
     path('product/filter-data',filter_data,name="filter-data"),
     path('about/', ABOUT, name='about'),
-    path('job_details/', JOB_DETAILS, name='job_details'),
+    path('job_details/<int:id>', JOB_DETAILS, name='job_details'),
     path('contact/', CONTACT, name='contact'),
     # USER AUTHENTICAION
     path('user_signup/',  SIGN_UP, name='user_signup'),
@@ -38,5 +38,7 @@ urlpatterns = [
     path('add_job/' , ADD_JOB, name="add_job"),
     path('job_list/' , job_list, name="job_list"),
     path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
+    path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
+    path('applyforjob/<int:id>',  apply, name='applyforjob'),
 
 ]
