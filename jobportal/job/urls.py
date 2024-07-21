@@ -5,6 +5,7 @@ urlpatterns = [
     path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
     path('job/', JOB, name='job'),
+    path('product/filter-data',filter_data,name="filter-data"),
     path('about/', ABOUT, name='about'),
     path('job_details/', JOB_DETAILS, name='job_details'),
     path('contact/', CONTACT, name='contact'),

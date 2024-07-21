@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
 from .models import *
 from datetime import datetime
 # Create your views here.
@@ -13,9 +16,34 @@ def HOME(request):
     return render(request, 'main/home.html')
 
 def JOB(request):
-    if not request.user.is_authenticated:
-        return redirect('user_login')
-    return render(request, 'main/job.html')
+    # if not request.user.is_authenticated:
+    #     return redirect('user_login')
+    
+    job_type = Job_type.objects.all()
+    label = Experience.objects.all()
+    jobs = Job.objects.all()
+    job =Job.objects.all().count()
+    context={
+        'job_type':job_type,
+        'jobs':jobs,
+        'job':job,
+        'label':label,
+    }
+    return render(request, 'main/job.html', context)
+
+def filter_data(request):
+    job_type=request.GET.getlist('job_type[]')
+    experience_ids = request.GET.getlist('experience[]')
+
+    if job_type:
+        job=Job.objects.filter(job_type__id__in =job_type).order_by('-id')
+    elif experience_ids:
+        job = Job.objects.filter(experience__id__in=experience_ids)
+    else:
+        job= Job.objects.all().order_by('-id')
+
+    t = render_to_string('ajax/job.html', {'job':job})
+    return JsonResponse({'data': t})
 
 def ABOUT(request):
     return render(request, 'main/about.html')
