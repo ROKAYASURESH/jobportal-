@@ -477,3 +477,10 @@ def candidatelist(request):
         "data":data
     }
     return render(request, 'main/employer/candidatelist.html', context)
+
+def all_applied_list(request):
+    all = Apply.objects.all()
+    context={
+        "all":all
+    }
+    return render(request, 'main/admin/all_applied_list.html', context)

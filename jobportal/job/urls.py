@@ -41,5 +41,6 @@ urlpatterns = [
     path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
     path('applyforjob/<int:id>',  apply, name='applyforjob'),
     path('candidatelist',  candidatelist, name='candidatelist'),
+    path('all_applied_list',  all_applied_list, name='all_applied_list'),
 
 ]
