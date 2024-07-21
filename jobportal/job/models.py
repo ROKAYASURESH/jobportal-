@@ -61,10 +61,10 @@ class Job(models.Model):
     
 class Apply(models.Model):
     job=models.ForeignKey(Job, on_delete=models.CASCADE)
-    jobseeker=models.ForeignKey(StudentUser, on_delete=models.CASCADE)
+    student=models.ForeignKey(StudentUser, on_delete=models.CASCADE)
     cv=models.FileField(null=True)
     applydate=models.DateField()
 
 
-    def __str__(self) -> str:
-        return self.id
+    def __str__(self):
+        return f"Application by {self.student} for {self.job}" 

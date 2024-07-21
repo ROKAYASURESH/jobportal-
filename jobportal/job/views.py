@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-
+from datetime import date
 from .models import *
 from datetime import datetime
 # Create your views here.
@@ -13,17 +13,20 @@ def JOB_USER(request):
     return render(request, 'base/common.html')
 
 def HOME(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    
     user = request.user
     job = Job.objects.all()
     list = []
 
     try:
-        jobseeker = StudentUser.objects.get(user=user)
-        data = Apply.objects.filter(jobseeker=jobseeker)
+        student = StudentUser.objects.get(user=user)
+        data = Apply.objects.filter(student=student)
         for i in data:
             list.append(i.job.id)
     except StudentUser.DoesNotExist:
-        jobseeker = None
+        student = None
         list = []
 
     context = {
@@ -406,6 +409,40 @@ def edit_jobdetails(request, id):
     return render(request, "main/employer/edit_jobDetail.html", context)
 
 
+
+from django.utils import timezone
 # APPLY for a job
 def apply(request, id):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+
+    user = request.user
+    today_date = timezone.now().date()
+
+    # Check if the student profile exists
+    student = StudentUser.objects.filter(user=user).first()
+    if not student:
+        messages.error(request, 'Student profile not found.')
+        return redirect('home')  # Redirect to an error page or some appropriate URL
+
+    # Check if the job exists
+    job = Job.objects.filter(id=id).first()  # Changed to Job from StudentUser
+    if not job:
+        messages.error(request, 'Job not found.')
+        return redirect('home')  # Redirect to an error page or some appropriate URL
+
+    if job.end_date < today_date:
+        messages.error(request, 'Date expired')
+    elif job.start_date > today_date:
+        messages.error(request, 'Job not open yet')
+    else:
+        if request.method == "POST":
+            cv = request.FILES.get('cv')
+            if cv:
+                Apply.objects.create(student=student, job=job, cv=cv, applydate=today_date)
+                messages.success(request, 'Application submitted successfully.')
+                return redirect("home")
+            else:
+                messages.error(request, 'CV file is missing.')
+
     return render(request, "main/apply.html")
