@@ -38,16 +38,28 @@ def HOME(request):
 def JOB(request):
     # if not request.user.is_authenticated:
     #     return redirect('user_login')
-    
+    user = request.user
     job_type = Job_type.objects.all()
     label = Experience.objects.all()
     jobs = Job.objects.all()
     job =Job.objects.all().count()
+
+    list = []
+
+    try:
+        student = StudentUser.objects.get(user=user)
+        data = Apply.objects.filter(student=student)
+        for i in data:
+            list.append(i.job.id)
+    except StudentUser.DoesNotExist:
+        student = None
+        list = []
     context={
         'job_type':job_type,
         'jobs':jobs,
         'job':job,
         'label':label,
+        'list':list
     }
     return render(request, 'main/job.html', context)
 
@@ -201,7 +213,18 @@ def RECRUITER_LOGIN(request):
 def ADMIN_DASHBOARD(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
-    return render(request, "admin_dashboard/main.html")
+    employer=Recruiter.objects.all().count()
+    Jobseeker=StudentUser.objects.all().count()
+    pending =Recruiter.objects.filter(status='pending').count()
+    applied=Apply.objects.all().count()
+
+    context={
+        "employer":employer,
+        "Jobseeker":Jobseeker,
+        "pending":pending,
+        'applied':applied
+    }
+    return render(request, "admin_dashboard/main.html", context)
 # Admin_Login
 def ADMIN_LOGIN(request):
     error = ''
@@ -446,3 +469,11 @@ def apply(request, id):
                 messages.error(request, 'CV file is missing.')
 
     return render(request, "main/apply.html")
+
+
+def candidatelist(request):
+    data = Apply.objects.all()
+    context={
+        "data":data
+    }
+    return render(request, 'main/employer/candidatelist.html', context)

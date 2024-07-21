@@ -37,7 +37,7 @@
     <!-- Hero Area Start-->
     <div class="slider-area ">
         <div class="single-slider section-overly slider-height2 d-flex align-items-center"
-            data-background="assets/img/hero/about.jpg">
+            data-background="{% static 'assets/img/hero/about.jpg' %}">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -259,8 +259,13 @@
                                     </div>
                                 </div>
                                 <div class="items-link items-link2 f-right">
-                                    <a href="{% url 'job_details' i.id %}" >Apply Now</a>
-                                    <span>Date Line: {{i.end_date}}</span>
+                                    {% if i.id in list %}
+                                    <a href="">Applied</a>
+                                    {% else %}
+                                    <a href="{% url 'job_details' i.id %}">Apply Now</a>
+                                    {% endif %}
+                                    <span>Date Line: {{ i.end_date }}</span>
+                                    
                                 </div>
                             </div>
                             {% endfor %}
