@@ -1,37 +1,90 @@
 {% extends 'base/base.html' %}
-{% block title%} {% endblock %}
+{% block title%}Find-Job {% endblock %}
 {% load static %}
 {% block css %} {% endblock %}
 {% block content %}
+<!--  -->
 <script>
-    $(document).ready(function(){
-    
-        $(".filter-checkbox").on('click', function(){
-            var filter_object={};
-            $(".filter-checkbox").each(function(index,ele){
-                var filter_value=$(this).val();
-                var filter_key=$(this).data('filter');
-                console.log(filter_key,filter_value);
-                filter_object[filter_key]=Array.from(document.querySelectorAll('input[data-filter='+filter_key+']:checked')).map(function(el){
-                     return el.value;
-                });
-            });
-    
+    $(document).ready(function () {
+        $('.filter-checkbox').change(function () {
+            var days = $(this).data('days');
+            console.log("Days filter:", days);  // Log the days filter value
             $.ajax({
-                url:"{% url 'filter-data' %}",
-                data:filter_object,
-                dataType:'json',
-                success:function(res){
-                    console.log(res)
-                    $("#filteredJob").html(res.data);
-                    var filter_value=$(this).val();
-                    var filter_key=$(this).data('filter');
+                url: "{% url 'filter_jobs_by_end_date' %}",
+                data: {
+                    'days': days
+                },
+                success: function (data) {
+                    var jobs = data.jobs;
+                    var jobList = $('#job-list');
+                    jobList.empty();
+                    for (var i = 0; i < jobs.length; i++) {
+                        jobList.append('<div class="job-item">' +
+                            '<h3>' + jobs[i].title + '</h3>' +
+                            '<p>Location: ' + jobs[i].location + '</p>' +
+                            '<p>Remaining Days: ' + jobs[i].remaining_days + '</p>' +
+                            '<p>End Date: ' + jobs[i].end_date + '</p>' +
+                            '</div>');
+                    }
                 }
             });
         });
     });
-    </script>
-    
+</script>
+
+<!-- AJAX FOR SELECTION INPUT BOX -->
+
+<script>
+    $(document).ready(function () {
+        $("#job-location-select").on('change', function () {
+            var filter_value = $(this).val();
+            var filter_object = {
+                location: filter_value
+            };
+
+            $.ajax({
+                url: "{% url 'filter-data' %}",
+                data: filter_object,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    $("#filteredJob").html(res.data);
+                }
+            });
+        });
+    });
+</script>
+<!-- AJAX FOR CHECKED INPUT BOX -->
+
+<script>
+    $(document).ready(function () {
+
+        $(".filter-checkbox").on('click', function () {
+            var filter_object = {};
+            $(".filter-checkbox").each(function (index, ele) {
+                var filter_value = $(this).val();
+                var filter_key = $(this).data('filter');
+                console.log(filter_key, filter_value);
+                filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (el) {
+                    return el.value;
+                });
+            });
+
+            $.ajax({
+                url: "{% url 'filter-data' %}",
+                data: filter_object,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res)
+                    $("#filteredJob").html(res.data);
+                    var filter_value = $(this).val();
+                    var filter_key = $(this).data('filter');
+                }
+            });
+        });
+    });
+</script>
+
 <main>
 
     <!-- Hero Area Start-->
@@ -78,12 +131,11 @@
                             </div>
                             <!-- Select job items start -->
                             <div class="select-job-items2">
-                                <select name="select">
-                                    <option value="">All Category</option>
-                                    <option value="">Category 1</option>
-                                    <option value="">Category 2</option>
-                                    <option value="">Category 3</option>
-                                    <option value="">Category 4</option>
+                                <select name="title" id="job-title-select">
+                                    <option value="">All Titles</option>
+                                    {% for job in jobs %}
+                                    <option value="{{ job.title }}">{{ job.title }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <!--  Select job items End-->
@@ -94,14 +146,15 @@
                                 </div>
                                 {% for i in job_type %}
                                 <label class="container">
-                                    <input type="checkbox" class="form-check-input  filter-checkbox" id="job_type-{{i.id}}" data-filter="job_type" value="{{i.id}}">
+                                    <input type="checkbox" class="form-check-input  filter-checkbox"
+                                        id="job_type-{{i.id}}" data-filter="job_type" value="{{i.id}}">
                                     <label class="form-check-label font-size-base" for="job-{{i.id}}">
                                         {{i.job_type}}
                                     </label>
                                     <span class="checkmark"></span>
                                 </label>
                                 {% endfor %}
-                              
+
                             </div>
                             <!-- select-Categories End -->
                         </div>
@@ -112,13 +165,19 @@
                             </div>
                             <!-- Select job items start -->
                             <div class="select-job-items2">
-                                <select name="select">
-                                    <option value="">Anywhere</option>
-                                    <option value="">Category 1</option>
-                                    <option value="">Category 2</option>
+                                <!-- <select name="select">
+                                    <option value="">Anywhere</option> -->
+                                <select name="select" id="job-location-select">
+                                    <option value="">Any Where</option>
+                                    {% for i in jobs %}
+                                    <option value="{{i.location}}" class="form-check-input filter-checkbox"
+                                        id="job_type-{{i.id}}" data-filter="job_type">{{i.location}}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <option value="">Category 2</option>
                                     <option value="">Category 3</option>
                                     <option value="">Category 4</option>
-                                </select>
+                                </select> -->
                             </div>
                             <!--  Select job items End-->
                             <!-- select-Categories start -->
@@ -126,65 +185,77 @@
                                 <div class="small-section-tittle2">
                                     <h4>Experience</h4>
                                 </div>
-                                
+
                                 {% for i in label %}
                                 <label class="container">
-                                    <input type="checkbox" class="form-check-input  filter-checkbox" id="job_type-{{i.id}}" data-filter="job_type" value="{{i.id}}">
+                                    <input type="checkbox" class="form-check-input  filter-checkbox"
+                                        id="job_type-{{i.id}}" data-filter="job_type" value="{{i.id}}">
                                     <label class="form-check-label font-size-base" for="job-{{i.id}}">
                                         {{i.label}} Years
                                     </label>
                                     <span class="checkmark"></span>
                                 </label>
                                 {% endfor %}
-                                <!-- <label class="container">2-3 Years
-                                    <input type="checkbox" checked="checked active">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">3-6 Years
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">6-more..
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label> -->
                             </div>
                             <!-- select-Categories End -->
                         </div>
                         <!-- single three -->
-                        <div class="single-listing">
-                            <!-- select-Categories start -->
-                            <div class="select-Categories pb-50">
-                                <div class="small-section-tittle2">
-                                    <h4>Posted Within</h4>
-                                </div>
-                                <label class="container">Any
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">Today
-                                    <input type="checkbox" checked="checked active">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">Last 2 days
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">Last 3 days
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">Last 5 days
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="container">Last 10 days
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
+                        <div class="select-Categories pb-50">
+                            <div class="small-section-tittle2">
+                                <h4>Posted Within</h4>
                             </div>
-                            <!-- select-Categories End -->
+                            <label class="container">Any
+                                <input type="checkbox" class="filter-checkbox" data-days="0">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">Today
+                                <input type="checkbox" class="filter-checkbox" data-days="1">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">Last 2 days
+                                <input type="checkbox" class="filter-checkbox" data-days="2"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">Last 3 days
+                                <input type="checkbox" class="filter-checkbox" data-days="3">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">Last 5 days
+                                <input type="checkbox" class="filter-checkbox" data-days="5">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container">Last 10 days
+                                <input type="checkbox" class="filter-checkbox" data-days="10">
+                                <span class="checkmark"></span>
+                            </label>
                         </div>
+
+                        
+
+                        <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" style="z-index: 9999;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div id="job-list">
+                <!-- Jobs will be displayed here -->
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
                         <div class="single-listing">
                             <!-- Range Slider Start -->
                             <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
@@ -239,13 +310,14 @@
                             </div>
                             <!-- Count of Job list End -->
                             <!-- single-job-content -->
-                             <!--  -->
+                            <!--  -->
                             {% for i in jobs%}
                             <div class="single-job-items mb-30 border rounded">
                                 <div class="job-items">
                                     <div class="company-img">
-                                        <a href="#"><img src="{{i.image.url}}" alt="" width="100" height="100" style="border: 1px solid black; padding: 4px;"></a>
-                            
+                                        <a href="#"><img src="{{i.image.url}}" alt="" width="100" height="100"
+                                                style="border: 1px solid black; padding: 4px;"></a>
+
                                     </div>
                                     <div class="job-tittle job-tittle2">
                                         <a href="#">
@@ -260,12 +332,12 @@
                                 </div>
                                 <div class="items-link items-link2 f-right">
                                     {% if i.id in list %}
-                                    <a href="">Applied</a>
+                                    <a href="" class="btn-success">Applied</a>
                                     {% else %}
                                     <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                     {% endif %}
                                     <span>Date Line: {{ i.end_date }}</span>
-                                    
+
                                 </div>
                             </div>
                             {% endfor %}
@@ -291,6 +363,29 @@
                                     <span>7 hours ago</span>
                                 </div>
                             </div>
+
+                            <!--Pagination Start  -->
+                            <div class="pagination-area pb-115 text-center">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="single-wrap d-flex justify-content-center">
+                                                <nav aria-label="Page navigation example">
+                                                    <ul class="pagination justify-content-start">
+                                                        <li class="page-item active"><a class="page-link"
+                                                                href="#">01</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                                        <li class="page-item"><a class="page-link" href="#"><span
+                                                                    class="ti-angle-right"></span></a></li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Pagination End  -->
                         </div>
                     </section>
 
@@ -301,27 +396,7 @@
         </div>
     </div>
     <!-- Job List Area End -->
-    <!--Pagination Start  -->
-    <div class="pagination-area pb-115 text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="single-wrap d-flex justify-content-center">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-start">
-                                <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                                <li class="page-item"><a class="page-link" href="#">02</a></li>
-                                <li class="page-item"><a class="page-link" href="#">03</a></li>
-                                <li class="page-item"><a class="page-link" href="#"><span
-                                            class="ti-angle-right"></span></a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Pagination End  -->
+
 
 </main>
 

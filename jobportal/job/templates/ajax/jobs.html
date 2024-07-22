@@ -1,0 +1,32 @@
+<div id="job-list">
+    <!-- Jobs will be displayed here -->
+    {% for i in jobs %}
+    <div class="single-job-items mb-30 border rounded">
+        <div class="job-items">
+            <div class="company-img">
+                <a href="#"><img src="{{i.image.url}}" alt="" width="100" height="100" style="border: 1px solid black; padding: 4px;"></a>
+    
+            </div>
+            <div class="job-tittle job-tittle2">
+                <a href="#">
+                    <h4>{{i.title}}</h4>
+                </a>
+                <ul>
+                    <li>{{i.recruiter.company}}</li>
+                    <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
+                    <li>{{i.job_type.job_type}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="items-link items-link2 f-right">
+            {% if i.id in list %}
+            <a href="" class="btn-success">Applied</a>
+            {% else %}
+            <a href="{% url 'job_details' i.id %}">Apply Now</a>
+            {% endif %}
+            <span>Date Line: {{ i.end_date }}</span>
+            
+        </div>
+    </div>
+    {% endfor %}
+</div>

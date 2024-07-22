@@ -7,27 +7,27 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from datetime import date
 from .models import *
-from datetime import datetime
-# Create your views here.
+from datetime import datetime, timedelta
+
+'''=========User and Employer Commmon link=============================''' 
 def JOB_USER(request):
     return render(request, 'base/common.html')
 
 def HOME(request):
-    if not request.user.is_authenticated:
-        return redirect('user_login')
-    
     user = request.user
     job = Job.objects.all()
     list = []
 
-    try:
-        student = StudentUser.objects.get(user=user)
-        data = Apply.objects.filter(student=student)
-        for i in data:
-            list.append(i.job.id)
-    except StudentUser.DoesNotExist:
-        student = None
-        list = []
+    if user.is_authenticated:
+        try:
+            student = StudentUser.objects.get(user=user)
+            data = Apply.objects.filter(student=student)
+            for i in data:
+                list.append(i.job.id)
+        except StudentUser.DoesNotExist:
+            list = []
+    else:
+        list = []  # Ensure list is empty if the user is not logged in
 
     context = {
         'job': job,
@@ -45,15 +45,17 @@ def JOB(request):
     job =Job.objects.all().count()
 
     list = []
+    if user.is_authenticated:
+        try:
+            student = StudentUser.objects.get(user=user)
+            data = Apply.objects.filter(student=student)
+            for i in data:
+                list.append(i.job.id)
+        except StudentUser.DoesNotExist:
+            list = []
+    else:
+        list = []  # Ensure list is empty if the user is not logged in
 
-    try:
-        student = StudentUser.objects.get(user=user)
-        data = Apply.objects.filter(student=student)
-        for i in data:
-            list.append(i.job.id)
-    except StudentUser.DoesNotExist:
-        student = None
-        list = []
     context={
         'job_type':job_type,
         'jobs':jobs,
@@ -63,11 +65,17 @@ def JOB(request):
     }
     return render(request, 'main/job.html', context)
 
+# for Check box filter
 def filter_data(request):
     job_type=request.GET.getlist('job_type[]')
     experience_ids = request.GET.getlist('experience[]')
-
-    if job_type:
+    location = request.GET.get('location')
+    title = request.GET.get('title')
+    if title:
+        job = Job.objects.filter(title=title)
+    elif location:
+        job = Job.objects.filter(location=location)
+    elif job_type:
         job=Job.objects.filter(job_type__id__in =job_type).order_by('-id')
     elif experience_ids:
         job = Job.objects.filter(experience__id__in=experience_ids)
@@ -77,6 +85,23 @@ def filter_data(request):
     t = render_to_string('ajax/job.html', {'job':job})
     return JsonResponse({'data': t})
 
+# Remaning Days
+def filter_jobs_by_end_date(request):
+    if request.method == 'GET':
+        days_filter = int(request.GET.get('days', 0))
+        target_date = date.today() - timedelta(days=days_filter)
+        filtered_jobs = Job.objects.filter(creationdate__gte=target_date)
+        
+        jobs_data = []
+        for job in filtered_jobs:
+            jobs_data.append({
+                'title': job.title,
+                'location': job.location,
+                'remaining_days': job.remaining_days(),
+                'end_date': job.end_date.strftime('%Y-%m-%d')
+            })
+        
+        return JsonResponse({'jobs': jobs_data})
 def ABOUT(request):
     return render(request, 'main/about.html')
 
@@ -89,6 +114,8 @@ def JOB_DETAILS(request, id):
         'job':job
     }
     return render(request, 'main/job_details.html', context)
+
+
 
 '''=================================================================
                     USER_AUTHENTICATION START
@@ -225,6 +252,7 @@ def ADMIN_DASHBOARD(request):
         'applied':applied
     }
     return render(request, "admin_dashboard/main.html", context)
+
 # Admin_Login
 def ADMIN_LOGIN(request):
     error = ''
@@ -250,6 +278,7 @@ def ADMIN_LOGIN(request):
 def ADMIN_LOGOUT(request):
     logout(request)
     return redirect('admin_login')
+
 
 # User Data
 def VIEWS_USERS(request):
@@ -277,7 +306,7 @@ def recruiter_pending(request):
     }
     return render(request, "main/admin/recruiter_pending.html", context)
 
-# Change_Status
+# Change_Status form
 def CHANGE_STATUS(request, id):
     if not request.user.is_authenticated:
         return redirect('admin_login')
@@ -335,21 +364,6 @@ def DELETE_EMPLOYER(request, id):
     data.delete()
     return redirect('employer_all')
 
-from django.contrib.auth.forms import PasswordChangeForm
-
-def password_change(request):
-    if not request.user.is_authenticated:
-        return redirect('user_login')
-    user_form=PasswordChangeForm(user=request.user)
-    if request.method =='POST':
-        user_form=PasswordChangeForm(user=request.user, data=request.POST)
-        if user_form.is_valid():
-            user_form.save()
-            return redirect('user_login')
-    context={
-        "user_form":user_form
-    }
-    return render(request, "main/change_password.html", context)
 
 
 # EMPLOYER
@@ -484,3 +498,20 @@ def all_applied_list(request):
         "all":all
     }
     return render(request, 'main/admin/all_applied_list.html', context)
+
+
+from django.contrib.auth.forms import PasswordChangeForm
+
+def password_change(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    user_form=PasswordChangeForm(user=request.user)
+    if request.method =='POST':
+        user_form=PasswordChangeForm(user=request.user, data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('user_login')
+    context={
+        "user_form":user_form
+    }
+    return render(request, "main/change_password.html", context)

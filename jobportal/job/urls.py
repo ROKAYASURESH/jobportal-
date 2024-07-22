@@ -1,7 +1,10 @@
 from django.urls import path
 from .views import *
 
+from .views import filter_jobs_by_end_date
+
 urlpatterns = [
+    
     path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
     path('job/', JOB, name='job'),
@@ -42,5 +45,8 @@ urlpatterns = [
     path('applyforjob/<int:id>',  apply, name='applyforjob'),
     path('candidatelist',  candidatelist, name='candidatelist'),
     path('all_applied_list',  all_applied_list, name='all_applied_list'),
+ path('filter_jobs_by_end_date/', filter_jobs_by_end_date, name='filter_jobs_by_end_date'),
 
 ]
+
+

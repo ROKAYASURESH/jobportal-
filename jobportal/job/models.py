@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import date
 from django.contrib.auth.models import User
 
 class StudentUser(models.Model):
@@ -58,6 +58,9 @@ class Job(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+    def remaining_days(self):
+        return (self.end_date - date.today()).days
     
 class Apply(models.Model):
     job=models.ForeignKey(Job, on_delete=models.CASCADE)
