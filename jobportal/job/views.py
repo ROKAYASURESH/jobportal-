@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -271,7 +271,16 @@ def EMPLOYER_SIGNUP(request):
     return render(request, 'auth/employer/employer_signup.html')
 
 def emp_dash(request):
-    return render(request, "main/employer/base_home.html")
+    user = request.user
+    try:
+        employer = Employers.objects.get(user=user)
+    except Employers.DoesNotExist:
+        employer = None
+    
+    context = {
+        'employer': employer,
+    }
+    return render(request, "main/employer/base_home.html", context)
 # Recrutier_login
 def EMPLOYER_LOGIN(request):
     if request.method == "POST":
@@ -290,6 +299,30 @@ def EMPLOYER_LOGIN(request):
             except:
                 messages.info(request, 'Invalid username or password.')
     return render(request, 'auth/employer/employer_login.html')
+
+
+def emp_profile(request, id):
+
+    employer = get_object_or_404(Employers, id=id)
+
+    if request.method == 'POST':
+        employer.mobile = request.POST.get('mobile')
+        employer.gender = request.POST.get('gender')
+        employer.company = request.POST.get('company')
+        employer.status = request.POST.get('status')
+        
+        if 'image' in request.FILES:
+            employer.image = request.FILES['image']
+
+        employer.save()
+        return redirect('emp_profile', id=employer.id)  # Redirect to the same profile page after saving
+
+    user = request.user
+    context = {
+        'user': user,
+        'employer': employer,
+    }
+    return render(request, "auth/employer/emp_profile.html", context)
 
 '''=================================================================
                     ADMIN

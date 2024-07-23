@@ -30,9 +30,10 @@ urlpatterns = [
     path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
     path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
     # employer Authentication
+    path('emp_dash/',  emp_dash, name='emp_dash'),
     path('employer_signup/',  EMPLOYER_SIGNUP, name='employer_signup'),
     path('employer_login/',  EMPLOYER_LOGIN, name='employer_login'),
-    path('emp_dash/',  emp_dash, name='emp_dash'),
+    path('emp_profile/<int:id>',  emp_profile, name='emp_profile'),
 
     # ADMIN============
    
