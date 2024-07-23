@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'main/employer/base.html' %}
 {% block title%}HOME{% endblock %}
 {% load static %}
 {% block css %}
@@ -145,7 +145,7 @@
 
 <section class="containers container">
     <header>RECRUITER SIGNUP</header>
-    <form class="form"  method="post" enctype="multipart/form-data">
+    <form class="form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="input-box">
@@ -158,12 +158,12 @@
 
             <div class="input-box">
                 <label>Start Date</label>[{{job.start_date}}]
-                <input type="date" name="start_date" value="{{job.}}" placeholder="Enter Start Date"  />
+                <input type="date" name="start_date" value="{{job.}}" placeholder="Enter Start Date" />
             </div>
-          
+
             <div class="input-box">
                 <label>End Date</label>[{{job.end_date}}]
-                <input type="date" name="end_date" value="{{job.end_date}}" placeholder="Enter End Date"  />
+                <input type="date" name="end_date" value="{{job.end_date}}" placeholder="Enter End Date" />
             </div>
         </div>
 
@@ -172,9 +172,9 @@
                 <label>Salary(Per Month)</label>
                 <input type="number" name="salary" value="{{job.salary}}" placeholder="Enter Salary" required />
             </div>
-          
+
             <div class="input-box">
-                <img src="{{job.image.url}}" width="120" height="100" alt=""> 
+                <img src="{{job.image.url}}" width="120" height="100" alt="">
                 <input type="file" name="image" />
 
             </div>
@@ -185,22 +185,24 @@
         </div>
         <div class="input-box">
             <label>Experience</label>
-            <input type="text" name="experience" value="{{job.experience}}" placeholder="Enter email Experience" required />
+            <input type="text" name="experience" value="{{job.experience}}" placeholder="Enter email Experience"
+                required />
         </div>
 
-          <div class="input-box">
-                <label>Skills</label>
-                <input type="text" name="skill" value="{{job.skills}}" placeholder="Enter Skill" required />
-            </div>
-
-            <div class="input-box">
-                <label>Description</label>
-                <input type="text" name="desc" value="{{job.des}}" placeholder="Enter Description" required />
-            </div>
+        <div class="input-box">
+            <label>Skills</label>
+            <input type="text" name="skill" value="{{job.skills}}" placeholder="Enter Skill" required />
         </div>
 
+        <div class="input-box">
+            <label>Description</label>
+            <input type="text" name="desc" value="{{job.des}}" placeholder="Enter Description" required />
+        </div>
+       
 
-        <button type="submit">Submit</button>
+        <div class="input-box">
+            <button type="submit">Submit</button>
+        </div>
     </form>
 </section>
 

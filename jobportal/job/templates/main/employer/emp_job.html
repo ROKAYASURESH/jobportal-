@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'main/employer/base.html' %}
 {% block title%}HOME{% endblock %}
 {% load static %}
 {% block css %}
@@ -153,8 +153,8 @@
     }
 </script>
 
-<section class="containers container">
-    <header>RECRUITER SIGNUP</header>
+<section class=" container">
+    <h2>Job Add</h2>
     <form class="form" onsubmit="return checkpass()" method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -170,7 +170,7 @@
                 <label>Start Date</label>
                 <input type="date" name="start_date" placeholder="Enter Start Date" required />
             </div>
-          
+
             <div class="input-box">
                 <label>End Date</label>
                 <input type="date" name="end_date" placeholder="Enter End Date" required />
@@ -182,10 +182,10 @@
                 <label>Salary(Per Month)</label>
                 <input type="number" name="salary" placeholder="Enter Salary" required />
             </div>
-          
+
             <div class="input-box">
                 <label>Company Logo</label>
-                <input type="file" name="image"  required />
+                <input type="file" name="image" required />
             </div>
         </div>
         <div class="input-box">
@@ -197,16 +197,16 @@
             <input type="text" name="experience" placeholder="Enter email Experience" required />
         </div>
 
-          <div class="input-box">
-                <label>Skills</label>
-                <input type="text" name="skill" placeholder="Enter Skill" required />
-            </div>
-
-            <div class="input-box">
-                <label>Description</label>
-                <input type="text" name="desc" placeholder="Enter Description" required />
-            </div>
+        <div class="input-box">
+            <label>Skills</label>
+            <input type="text" name="skill" placeholder="Enter Skill" required />
         </div>
+
+        <div class="input-box">
+            <label>Description</label>
+            <input type="text" name="desc" placeholder="Enter Description" required />
+        </div>
+
 
 
         <button type="submit">Submit</button>

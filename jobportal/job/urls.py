@@ -4,28 +4,42 @@ from .views import *
 from .views import filter_jobs_by_end_date
 
 urlpatterns = [
-    
+    #! FOR JOBSEEKER SIDE
     path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
     path('job/', JOB, name='job'),
-    path('product/filter-data',filter_data,name="filter-data"),
     path('about/', ABOUT, name='about'),
-    path('job_details/<int:id>', JOB_DETAILS, name='job_details'),
     path('contact/', CONTACT, name='contact'),
-    # USER AUTHENTICAION
+    path('job_details/<int:id>', JOB_DETAILS, name='job_details'),
+    path('applyforjob/<int:id>',  apply, name='applyforjob'),
+    # JOBSEEKER AUTHENTICAION
     path('user_signup/',  SIGN_UP, name='user_signup'),
     path('user_login/',  USER_LOGIN, name='user_login'),
     path('logout/',  USER_LOGOUT, name='logout'),
 
-    # RECRUITER AUTHENTICATION
-    path('recruiter_signup/',  RECRUITER_SIGNUP, name='recruiter_signup'),
-    path('recruiter_login/',  RECRUITER_LOGIN, name='recruiter_login'),
+    # AJAX
+    path('product/filter-data',filter_data,name="filter-data"),
+    path('all_applied_list',  all_applied_list, name='all_applied_list'),
+    path('filter_jobs_by_end_date/', filter_jobs_by_end_date, name='filter_jobs_by_end_date'),
+
+
+    #! FOR EMPLOYER
+    path('add_job/' , ADD_JOB, name="add_job"),
+    path('job_list/' , job_list, name="job_list"),
+    path('candidatelist',  candidatelist, name='candidatelist'),
+    path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
+    path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
+    # employer Authentication
+    path('employer_signup/',  EMPLOYER_SIGNUP, name='employer_signup'),
+    path('employer_login/',  EMPLOYER_LOGIN, name='employer_login'),
+    path('emp_dash/',  emp_dash, name='emp_dash'),
 
     # ADMIN============
    
     path('admin_dashboard/',  ADMIN_DASHBOARD, name='admin_dashboard'),
     path('admin_login/',  ADMIN_LOGIN, name='admin_login'),
     path('admin_logout/',  ADMIN_LOGOUT, name='admin_logout'),
+    path('admin_profile/',  admin_profile, name='admin_profile'),
      # ------------user-------------
     path('views_user/',  VIEWS_USERS, name='views_user'),
    
@@ -38,14 +52,7 @@ urlpatterns = [
     path('delete_employer<int:id>',  DELETE_EMPLOYER, name='delete_employer'),
     
     path('password_change/' , password_change, name="password_change"),
-    path('add_job/' , ADD_JOB, name="add_job"),
-    path('job_list/' , job_list, name="job_list"),
-    path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
-    path('edit_jobdetails/<int:id>',  edit_jobdetails, name='edit_jobdetails'),
-    path('applyforjob/<int:id>',  apply, name='applyforjob'),
-    path('candidatelist',  candidatelist, name='candidatelist'),
-    path('all_applied_list',  all_applied_list, name='all_applied_list'),
- path('filter_jobs_by_end_date/', filter_jobs_by_end_date, name='filter_jobs_by_end_date'),
+
 
 ]
 

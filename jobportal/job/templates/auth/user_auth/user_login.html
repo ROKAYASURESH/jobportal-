@@ -141,40 +141,25 @@
   }
 </style>
 
-  <section class="containers container">
-    <header>LOGIN</header>
+  <section class="containers container py-3 my-5">
+    <header>JOB SEEKERS LOGIN</header>
     <form class="form"  method="post" action=""
       enctype="multipart/form-data">
       {% csrf_token %}
      
         <div class="input-box">
           <label>Email</label>
-          <input type="email" name="username" placeholder="Enter first_name" required />
+          <input type="email" name="username" placeholder="Enter Email Address" required />
         </div>
 
         <div class="input-box">
           <label>password</label>
-          <input type="password" name="password" placeholder="Enter last_name" required />
+          <input type="password" name="password" placeholder="Enter User Password" required />
         </div>
      
    
       <button type="submit">Submit</button>
     </form>
-    {% if error == "no" %}
-  <script>
-    alert('login Successfull');
-    window.location = ("{% url 'home' %}")
-  </script>
-  {% endif %}
-  
-  {% if error == "yes" %}
-  <script>
-    alert('Invalid Creditanial Try Again');
-    window.location = ("{% url 'user_login' %}")
-  </script>
-  {% endif %}
-
-  
   </section>
 
 

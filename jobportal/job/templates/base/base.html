@@ -12,7 +12,8 @@
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 
 <!-- CSS -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Default theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 
@@ -82,11 +83,34 @@
     <script src="{% static 'assets/js/plugins.js' %}"></script>
     <script src="{% static 'assets/js/main.js' %}"></script>
     {% for flashmsg in messages %}
-<script>
+<!-- <script>
 
    alertify.set('notifier', 'position', 'top-right');
    alertify.success("{{ flashmsg|escapejs }}");
 
+</script> -->
+
+<script>
+    Swal.fire({
+  title: "{{flashmsg.tags}}",
+  text: "{{flashmsg}}",
+  icon: "{{flashmsg.tags}}",
+  timer:5000,
+  showClass: {
+    popup: `
+      animate__animated
+      animate__fadeInUp
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__fadeOutDown
+      animate__faster
+    `
+  }
+});
 </script>
 {% endfor %}
 

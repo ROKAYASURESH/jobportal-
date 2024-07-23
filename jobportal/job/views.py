@@ -9,6 +9,11 @@ from datetime import date
 from .models import *
 from datetime import datetime, timedelta
 
+from .form import AdminProfileUpdateForm
+
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 '''=========User and Employer Commmon link=============================''' 
 def JOB_USER(request):
     return render(request, 'base/common.html')
@@ -20,11 +25,11 @@ def HOME(request):
 
     if user.is_authenticated:
         try:
-            student = StudentUser.objects.get(user=user)
+            student = JobSeekers.objects.get(user=user)
             data = Apply.objects.filter(student=student)
             for i in data:
                 list.append(i.job.id)
-        except StudentUser.DoesNotExist:
+        except JobSeekers.DoesNotExist:
             list = []
     else:
         list = []  # Ensure list is empty if the user is not logged in
@@ -47,11 +52,11 @@ def JOB(request):
     list = []
     if user.is_authenticated:
         try:
-            student = StudentUser.objects.get(user=user)
+            student = JobSeekers.objects.get(user=user)
             data = Apply.objects.filter(student=student)
             for i in data:
                 list.append(i.job.id)
-        except StudentUser.DoesNotExist:
+        except JobSeekers.DoesNotExist:
             list = []
     else:
         list = []  # Ensure list is empty if the user is not logged in
@@ -123,114 +128,168 @@ def JOB_DETAILS(request, id):
 '''
 # User_Register
 def SIGN_UP(request):
-    error = " "
     if request.method == "POST" and request.FILES:
-        firstname=request.POST['first_name']
-        lastname=request.POST['last_name']
-        image=request.FILES['image']
-        password=request.POST['password']
-        # confirm_password=request.POST['confirm_password']
-        email=request.POST['email']
-        contact=request.POST['contact']
-        gender=request.POST['gender']
+        firstname = request.POST['first_name']
+        lastname = request.POST['last_name']
+        image = request.FILES['image']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        gender = request.POST['gender']
 
         try:
+            validate_password(password)            
+            if password != confirm_password:
+                messages.error(request, "Passwords do not match!")
+                return render(request, 'auth/user_auth/user_signup.html', {
+                    'firstname': firstname,
+                    'lastname': lastname,
+                    'email': email,
+                    'contact': contact,
+                    'gender':gender ,
+                } )
+            
+            if User.objects.filter(username=email).exists():
+                messages.error(request, "Email already exists!")
+                return render(request, 'auth/user_auth/user_signup.html', {
+                    'firstname': firstname,
+                    'lastname': lastname,
+                    'email': email,
+                    'contact': contact,
+                    'gender':gender ,
+                } )
+            
             user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
-            StudentUser.objects.create(user=user, mobile=contact, image=image, gender=gender, type='student')
-            error='No'
-        except:
-            error="yes"
+            JobSeekers.objects.create(user=user, mobile=contact, image=image, gender=gender, is_student=True)
+            messages.success(request, f'Registration successful, {firstname}! Welcome JobPortal')
+            return redirect('user_login')
+        
+        except ValidationError as e:
+            for error in e.messages:
+                messages.error(request, error)
+            return redirect('user_signup')
 
-    context={
-        'error':error
-    }      
-    return render(request, 'auth/user_auth/user_signup.html', context)
+    return render(request, 'auth/user_auth/user_signup.html')
 
 # User_Login
 def USER_LOGIN(request):
-    error = " "
     if request.method == "POST":
         username=request.POST['username']
         password=request.POST['password']
         user = authenticate(username=username, password=password)
         if user:
             try:
-                user1 = StudentUser.objects.get(user=user)
-                if user1.type == 'student':
+                user1 = JobSeekers.objects.get(user=user)
+                if user1.is_student:
                     login(request, user)
-                    error='no'
-                else:
-                    error = 'yes'
-            except:
-                error = 'yes'
-        else:
-            error = 'yes'
+                    messages.success(request, f'You have successfully logged in {username}')
+                    return redirect('home')
 
-    context={
-        'error':error
-    }
-    return render(request, 'auth/user_auth/user_login.html', context)
+                else:
+                    messages.error(request, 'Invalid username or password.')
+                    return redirect('user_login')
+
+            except:
+                messages.error(request, 'Invalid username or password.')
+                return redirect('user_login')
+        else:
+            messages.error(request, 'Invalid username or password.')
+            return redirect('user_login')
+    return render(request, 'auth/user_auth/user_login.html')
 
 # Logout
 def USER_LOGOUT(request):
     logout(request)
+    messages.success(request, 'You have successfully logged out,')
     return redirect('user_login')
 # ==================END========================
 
 '''=================================================================
-                    RECURATOR START
+                    EMPLOYER START
    =================================================================
 '''
-# Recurator_register
-def RECRUITER_SIGNUP(request):
-    error = " "
+
+def EMPLOYER_SIGNUP(request):
     if request.method == "POST" and request.FILES:
-        firstname=request.POST['first_name']
-        lastname=request.POST['last_name']
-        image=request.FILES['image']
-        password=request.POST['password']
-        # confirm_password=request.POST['confirm_password']
-        email=request.POST['email']
-        contact=request.POST['contact']
-        gender=request.POST['gender']
-        company=request.POST['company']
+        firstname = request.POST['first_name']
+        lastname = request.POST['last_name']
+        image = request.FILES['image']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        gender = request.POST['gender']
+        company = request.POST['company']
 
         try:
+            # Validate the password
+            validate_password(password)
+            
+            # Check if the passwords match
+            if password != confirm_password:
+                messages.error(request, "Passwords do not match!")
+                return render(request, 'auth/employer/employer_signup.html', {
+                    'firstname': firstname,
+                    'lastname': lastname,
+                    'email': email,
+                    'contact': contact,
+                    'company': company,
+                    'image': image
+                })
+            
+            # Check if the email is already in use
+            if User.objects.filter(username=email).exists():
+                messages.error(request, "Email already exists!")
+                return render(request, 'auth/employer/employer_signup.html', {
+                    'firstname': firstname,
+                    'lastname': lastname,
+                    'email': email,
+                    'contact': contact,
+                    'company': company,
+                    'image': image
+                })
+            
+            # Create the user and associated Employer profile
             user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
-            Recruiter.objects.create(user=user, mobile=contact, image=image, gender=gender, company=company, type='recruiter', status='pending')
-            error='No'
-        except:
-            error="yes"
+            Employers.objects.create(user=user, mobile=contact, image=image, gender=gender, company=company, is_employer = True, status='pending')
+            messages.success(request, f'Registration successful, {firstname}! Welcome JopPortal')
+            return redirect('employer_login')
+        
+        except ValidationError as e:
+            for error in e.messages:
+                messages.error(request, error)
+            return render(request, 'auth/employer/employer_signup.html', {
+                'firstname': firstname,
+                'lastname': lastname,
+                'email': email,
+                'contact': contact,
+                'company': company,
+                'image': image
+            })
 
-    context={
-        'error':error
-    }    
-    return render(request, 'auth/recruiter/recruiter_signup.html', context)
+    return render(request, 'auth/employer/employer_signup.html')
 
+def emp_dash(request):
+    return render(request, "main/employer/base_home.html")
 # Recrutier_login
-def RECRUITER_LOGIN(request):
-    error = " "
+def EMPLOYER_LOGIN(request):
     if request.method == "POST":
         username=request.POST['username']
         password=request.POST['password']
         user = authenticate(username=username, password=password)
         if user:
             try:
-                user1 = Recruiter.objects.get(user=user)
-                if user1.type == 'recruiter' and user1.status!='pending':
+                user1 = Employers.objects.get(user=user)
+                if user1.is_employer and user1.status!='pending':
                     login(request, user)
-                    error='no'
+                    messages.success(request, f'You have successfully logged in {username}')
+                    return redirect('emp_dash')
                 else:
-                    error = 'not'
+                   messages.error(request, "Your Status is currently pending !!")
             except:
-                error = 'yes'
-        else:
-            error = 'yes'
-
-    context={
-        'error':error
-    }
-    return render(request, 'auth/recruiter/recruiter_login.html', context)
+                messages.info(request, 'Invalid username or password.')
+    return render(request, 'auth/employer/employer_login.html')
 
 '''=================================================================
                     ADMIN
@@ -240,9 +299,9 @@ def RECRUITER_LOGIN(request):
 def ADMIN_DASHBOARD(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
-    employer=Recruiter.objects.all().count()
-    Jobseeker=StudentUser.objects.all().count()
-    pending =Recruiter.objects.filter(status='pending').count()
+    employer=Employers.objects.all().count()
+    Jobseeker=JobSeekers.objects.all().count()
+    pending =Employers.objects.filter(status='pending').count()
     applied=Apply.objects.all().count()
 
     context={
@@ -264,27 +323,44 @@ def ADMIN_LOGIN(request):
         try:
             if user.is_staff:
                 login(request, user)
-                error='no'
+                messages.success(request,f'You have successfully logged in {username}')
+                return redirect('admin_dashboard')
             else:
-                error='yes'
+                messages.error(request,f'Invalid Creditanial Try Again')
+                return redirect('admin_login')
         except:
-            error='yes'
-    context={
-        'error':error
-    }
-    return render(request, 'auth/admin_auth/admin_login.html', context)
+            messages.error(request,f'Invalid Creditanial Try Again')
+            return redirect('admin_login')
+    return render(request, 'auth/admin_auth/admin_login.html')
 
 # Logout
 def ADMIN_LOGOUT(request):
     logout(request)
     return redirect('admin_login')
 
+# 
+def admin_profile(request):
+    profile,created=AdminProfile.objects.get_or_create(user=request.user)
+    profile_form=AdminProfileUpdateForm(instance=profile)
+
+    if request.method=="POST":
+        profile_form=AdminProfileUpdateForm(request.POST,request.FILES,instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('admin_profile')
+
+    context={
+        'profile_form':profile_form,
+        'user':request.user,
+        'profile':request.user.adminprofile,
+    }
+    return render(request, "auth/admin_auth/admin_profile.html", context)
 
 # User Data
 def VIEWS_USERS(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    data = StudentUser.objects.all()
+    data = JobSeekers.objects.all()
     context={
         'data':data
     }
@@ -300,7 +376,7 @@ def DELETE_USER(request, id):
 def recruiter_pending(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    data =Recruiter.objects.filter(status='pending')
+    data =Employers.objects.filter(status='pending')
     context={
         'data':data
     }
@@ -312,17 +388,17 @@ def CHANGE_STATUS(request, id):
         return redirect('admin_login')
     
     error=''
-    recruiter =Recruiter.objects.get(id=id)
+    employers =Employers.objects.get(id=id)
     if request.method == "POST":
         status=request.POST['status']
-        recruiter.status = status
+        employers.status = status
         try:
-            recruiter.save()
+            employers.save()
             error='no'
         except:
             error='yes'
     context={
-        'recruiter':recruiter,
+        'employers':employers,
         'error':error
     }
     return render(request, "main/admin/change_status.html", context)
@@ -332,7 +408,7 @@ def CHANGE_STATUS(request, id):
 def emplpyer_accept(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    data =Recruiter.objects.filter(status='Accept')
+    data =Employers.objects.filter(status='Accept')
     context={
         'data':data
     }
@@ -342,7 +418,7 @@ def emplpyer_accept(request):
 def employer_reject(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    data =Recruiter.objects.filter(status='Reject')
+    data =Employers.objects.filter(status='Reject')
     context={
         'data':data
     }
@@ -352,7 +428,7 @@ def employer_reject(request):
 def employer_all(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    data =Recruiter.objects.all()
+    data =Employers.objects.all()
     context={
         'data':data
     }
@@ -378,12 +454,12 @@ def ADD_JOB(request):
         experience= request.POST['experience']
         location= request.POST['location']
         skills= request.POST['skill']
-        employer=Recruiter.objects.get(user=request.user)
+        employer=Employers.objects.get(user=request.user)
         try:
-            Job.objects.create(recruiter=employer, title=job_title, start_date=start_date, end_date=end_date, salary=salary, image=image, des=des, 
+            Job.objects.create(employers=employer, title=job_title, start_date=start_date, end_date=end_date, salary=salary, image=image, des=des, 
                            experience=experience, location=location, skills=skills )
             messages.success(request, 'Job Detail has been added')
-            return redirect('home')
+            return redirect('emp_dash')
         except ObjectDoesNotExist:
             messages.error(request, "Recruiter matching query does not exist.")
         except Exception as e:
@@ -392,12 +468,18 @@ def ADD_JOB(request):
 
 
 def job_list(request):
-    employer = Recruiter.objects.get(user=request.user)
-    job = Job.objects.filter(recruiter=employer)
+    employer = Employers.objects.get(user=request.user)
+    job = Job.objects.filter(employers=employer)
     context={
         'job':job
     }
     return render(request, "main/employer/job_list.html" ,context)
+
+
+
+
+
+
 
 
 def edit_jobdetails(request, id):
@@ -417,7 +499,7 @@ def edit_jobdetails(request, id):
         try:
             job.save()
             messages.success(request, 'Job Detail has been updated')
-            return redirect('home')
+            return redirect('job_list')
         except ObjectDoesNotExist:
             messages.error(request, "Recruiter matching query does not exist.")
         except Exception as e:
@@ -457,13 +539,13 @@ def apply(request, id):
     today_date = timezone.now().date()
 
     # Check if the student profile exists
-    student = StudentUser.objects.filter(user=user).first()
+    student = JobSeekers.objects.filter(user=user).first()
     if not student:
         messages.error(request, 'Student profile not found.')
         return redirect('home')  # Redirect to an error page or some appropriate URL
 
     # Check if the job exists
-    job = Job.objects.filter(id=id).first()  # Changed to Job from StudentUser
+    job = Job.objects.filter(id=id).first()  # Changed to Job from JobSeekers
     if not job:
         messages.error(request, 'Job not found.')
         return redirect('home')  # Redirect to an error page or some appropriate URL
