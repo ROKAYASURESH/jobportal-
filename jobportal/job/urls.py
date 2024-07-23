@@ -33,7 +33,9 @@ urlpatterns = [
     path('emp_dash/',  emp_dash, name='emp_dash'),
     path('employer_signup/',  EMPLOYER_SIGNUP, name='employer_signup'),
     path('employer_login/',  EMPLOYER_LOGIN, name='employer_login'),
+    path('emp_logout/',  Employer_LOGOUT, name='emp_logout'),
     path('emp_profile/<int:id>',  emp_profile, name='emp_profile'),
+    path('emp_password_change',  emp_password_change, name='emp_password_change'),
 
     # ADMIN============
    

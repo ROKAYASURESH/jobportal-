@@ -269,7 +269,10 @@ def EMPLOYER_SIGNUP(request):
             })
 
     return render(request, 'auth/employer/employer_signup.html')
-
+def Employer_LOGOUT(request):
+    logout(request)
+    messages.success(request, 'You have successfully logged out,')
+    return redirect('employer_login')
 def emp_dash(request):
     user = request.user
     try:
@@ -280,7 +283,8 @@ def emp_dash(request):
     context = {
         'employer': employer,
     }
-    return render(request, "main/employer/base_home.html", context)
+    
+    return render(request, "main/employer/base_home.html")
 # Recrutier_login
 def EMPLOYER_LOGIN(request):
     if request.method == "POST":
@@ -297,7 +301,7 @@ def EMPLOYER_LOGIN(request):
                 else:
                    messages.error(request, "Your Status is currently pending !!")
             except:
-                messages.info(request, 'Invalid username or password.')
+                messages.error(request, 'Invalid username or password.')
     return render(request, 'auth/employer/employer_login.html')
 
 
@@ -323,6 +327,23 @@ def emp_profile(request, id):
         'employer': employer,
     }
     return render(request, "auth/employer/emp_profile.html", context)
+
+def emp_password_change(request):
+    form = PasswordChangeForm(user=request.user)
+    if request.method=='POST':
+        form=PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Password change successfully')
+            return redirect('employer_login')
+        else:
+            messages.error(request, 'something went wrong !!')
+
+
+    context={
+        'form':form,
+    }
+    return render(request, "auth/employer/emp_password_change.html", context)
 
 '''=================================================================
                     ADMIN
