@@ -356,6 +356,27 @@ def admin_profile(request):
     }
     return render(request, "auth/admin_auth/admin_profile.html", context)
 
+def admin_password_change(request):
+    if request.method == "POST":
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+
+        try:
+            user = User.objects.get(id=request.user.id)
+            if user.check_password(old_password):
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, "Password changed successfully.")
+                return redirect('admin_login')
+            else:
+                messages.error(request, "Your old password was entered incorrectly. Please enter it again.")
+        except User.DoesNotExist:
+            messages.error(request, "Something went wrong. User does not exist.")
+    else:
+        messages.error(request, "Invalid request method.")
+
+    return render(request, "auth/admin_auth/admin_password_change.html")
+
 # User Data
 def VIEWS_USERS(request):
     if not request.user.is_authenticated:

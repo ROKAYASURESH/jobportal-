@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin_login/',  ADMIN_LOGIN, name='admin_login'),
     path('admin_logout/',  ADMIN_LOGOUT, name='admin_logout'),
     path('admin_profile/',  admin_profile, name='admin_profile'),
+    path('admin_password_change/',  admin_password_change, name='admin_password_change'),
      # ------------user-------------
     path('views_user/',  VIEWS_USERS, name='views_user'),
    

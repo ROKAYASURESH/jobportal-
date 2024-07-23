@@ -9,6 +9,9 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - Job Portal</title>
+    <!-- CSS -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Data_Table start -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
@@ -42,7 +45,7 @@
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{% url 'admin_profile' %}">Profile</a></li>
-                    <li><a class="dropdown-item" href="#!">Change_password</a></li>
+                    <li><a class="dropdown-item" href="{% url 'admin_password_change' %}">Change_password</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -190,6 +193,41 @@
         });
     </script>
     <!-- end -->
+
+        <!-- Jquery Plugins, main Jquery -->	
+        <script src="{% static 'assets/js/plugins.js' %}"></script>
+        <script src="{% static 'assets/js/main.js' %}"></script>
+        {% for flashmsg in messages %}
+    <!-- <script>
+    
+       alertify.set('notifier', 'position', 'top-right');
+       alertify.success("{{ flashmsg|escapejs }}");
+    
+    </script> -->
+    
+    <script>
+        Swal.fire({
+      title: "{{flashmsg.tags}}",
+      text: "{{flashmsg}}",
+      icon: "{{flashmsg.tags}}",
+      timer:5000,
+      showClass: {
+        popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `
+      },
+      hideClass: {
+        popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `
+      }
+    });
+    </script>
+    {% endfor %}
 </body>
 
 </html>
