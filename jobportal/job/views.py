@@ -324,11 +324,21 @@ def EMPLOYER_LOGIN(request):
     return render(request, 'auth/employer/employer_login.html')
 
 
-def emp_profile(request, id):
-    employer=AdminEmployerUpdateForm(user=request.user)
+def emp_profile(request):
+    # Get or create the JobSeekers profile for the current user
+    profile, created = Employers.objects.get_or_create(user=request.user)
+    profile_form = AdminEmployerUpdateForm(instance=profile)
 
-    context={
-        'employer':employer,
+    if request.method == "POST":
+        profile_form = AdminEmployerUpdateForm(request.POST, request.FILES, instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('emp_profile')
+
+    context = {
+        'profile_form': profile_form,
+        'user': request.user,
+        'profile': profile,  # Updated to directly pass the profile object
     }
     return render(request, "auth/employer/emp_profile.html", context)
 

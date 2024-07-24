@@ -22,7 +22,7 @@ class AdminJobseekerUpdateForm(forms.ModelForm):
 
 class AdminEmployerUpdateForm(forms.ModelForm):
     class Meta:
-        model = JobSeekers
+        model =Employers
         fields = ['mobile', 'image', 'company', 'gender']
         widgets = {
             'image': forms.FileInput(attrs={'class': 'form-control'}),
