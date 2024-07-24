@@ -1,18 +1,10 @@
 from django.shortcuts import render, redirect,  get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-from datetime import date
 from job.models import *
-from datetime import datetime, timedelta
+from job.form import AdminProfileUpdateForm
 
-from job.form import AdminProfileUpdateForm, AdminJobseekerUpdateForm, AdminEmployerUpdateForm
-
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 
 #! ADMIN_DASHBOARD: ======================================
 def ADMIN_DASHBOARD(request):

@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% block title%}Find-Job {% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+    .not{
+        color: #ffffff;
+        background-color: rgb(22, 204, 156);
+        margin: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+</style>
+<section class="my-5">
+    {% if user.is_authenticated %}
+
+{% if user.notification_set.all %}
+<ul>
+    <h3>Notifications:</h3>
+    {% for notification in user.notification_set.all %}
+        <li class="not">{{ notification.message }} - {{ notification.created_at }}</li>
+    {% endfor %}
+</ul>
+{% else %} 
+    <h1>No notification today</h1>
+{% endif %}
+{% endif %}
+</section>
+{% endblock %}

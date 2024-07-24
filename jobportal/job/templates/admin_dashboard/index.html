@@ -10,12 +10,12 @@
     <meta name="author" content="" />
     <title>Dashboard - Job Portal</title>
     <!-- CSS -->
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/> -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Data_Table start -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-   
+
     <!--  End -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{% static 'admin/css/styles.css' %}" rel="stylesheet" />
@@ -91,7 +91,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{% url 'views_user' %}">Jobseeker User</a>
                                 <a class="nav-link" href="{% url 'all_applied_list' %}">Candidate</a>
-                                
+
                             </nav>
                         </div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
@@ -133,11 +133,11 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                   Job Portal Admin
+                    Job Portal Admin
                 </div>
             </nav>
         </div>
-        
+
         <div id="layoutSidenav_content">
             {% block main %}
 
@@ -194,38 +194,38 @@
     </script>
     <!-- end -->
 
-        <!-- Jquery Plugins, main Jquery -->	
-        <script src="{% static 'assets/js/plugins.js' %}"></script>
-        <script src="{% static 'assets/js/main.js' %}"></script>
-        {% for flashmsg in messages %}
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="{% static 'assets/js/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    {% for flashmsg in messages %}
     <!-- <script>
     
        alertify.set('notifier', 'position', 'top-right');
        alertify.success("{{ flashmsg|escapejs }}");
     
     </script> -->
-    
+
     <script>
         Swal.fire({
-      title: "{{flashmsg.tags}}",
-      text: "{{flashmsg}}",
-      icon: "{{flashmsg.tags}}",
-      timer:5000,
-      showClass: {
-        popup: `
+            title: "{{flashmsg.tags}}",
+            text: "{{flashmsg}}",
+            icon: "{{flashmsg.tags}}",
+            timer: 5000,
+            showClass: {
+                popup: `
           animate__animated
           animate__fadeInUp
           animate__faster
         `
-      },
-      hideClass: {
-        popup: `
+            },
+            hideClass: {
+                popup: `
           animate__animated
           animate__fadeOutDown
           animate__faster
         `
-      }
-    });
+            }
+        });
     </script>
     {% endfor %}
 </body>

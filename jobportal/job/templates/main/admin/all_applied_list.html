@@ -1,45 +1,45 @@
-
 {% extends 'admin_dashboard/index.html' %}
+{% block title%}All_Applied-List{% endblock %}
 {% block main %}
 {% load static %}
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            All Employer
-        </div>
-        <div class="card-body">
-            <table id="example" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>s.No</th>
-                        <th>Full_NAme</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Job_Title</th>
-                        <th>Company</th>
-                        <th>Apply Date</th>
-                        <th>Resume</th>
-                       
-                    </tr>
-                </thead>
-                <tbody>
-                 {% for i in all %}
-                 <tr>
-                     <td>{{ forloop.counter }}</td>
-                     <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
-                     <td>{{ i.student.user.username }}</td>
-                     <td>{{ i.student.mobile }}</td>
-                     <td>{{ i.job.title }}</td>
-                     <td>{{ i.job.recruiter.company }}</td>
-                     <td>{{ i.applydate }}</td>
-                     <td><a href="{{ i.cv.url }}" class="btn btn-primary" download="i.cv">download CV</a></td>
-                 </tr>
-             {% endfor %}
-             
-                </tbody>
-            </table>
-         </div>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        All Employer
     </div>
+    <div class="card-body">
+        <table id="example" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>s.No</th>
+                    <th>Full_NAme</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Job_Title</th>
+                    <th>Company</th>
+                    <th>Apply Date</th>
+                    <th>Resume</th>
 
- {% endblock %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
+                    <td>{{ i.student.user.username }}</td>
+                    <td>{{ i.student.mobile }}</td>
+                    <td>{{ i.job.title }}</td>
+                    <td>{{ i.job.recruiter.company }}</td>
+                    <td>{{ i.applydate }}</td>
+                    <td><a href="{{ i.cv.url }}" class="btn btn-primary" download="i.cv">download CV</a></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

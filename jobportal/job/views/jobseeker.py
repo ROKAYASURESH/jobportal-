@@ -1,23 +1,32 @@
 from django.shortcuts import render, redirect,  get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from datetime import date
 from job.models import *
 from django.contrib.auth.forms import PasswordChangeForm
-
 from datetime import datetime, timedelta
-
 from django.utils import timezone
-
-from job.form import AdminProfileUpdateForm, AdminJobseekerUpdateForm, AdminEmployerUpdateForm
-
+from job.form import AdminJobseekerUpdateForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 
+@login_required
+def notifications_view(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    
+    # Mark all notifications as read
+    notifications.update(is_read=True)
+    
+    return render(request, 'main/notifications.html', {'notifications': notifications})
+
+def notification_count(request):
+    if request.user.is_authenticated:
+        return {'notification_count': Notification.objects.filter(user=request.user, is_read=False).count()}
+    return {'notification_count': 0}
 
 #! JOBSEEKER AND EMPLOYER REGISTER LINK:
 def JOB_USER(request):
@@ -50,6 +59,7 @@ def HOME(request):
 def JOB(request):
     # if not request.user.is_authenticated:
     #     return redirect('user_login')
+    
     user = request.user
     job_type = Job_type.objects.all()
     label = Experience.objects.all()

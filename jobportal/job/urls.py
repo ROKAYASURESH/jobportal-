@@ -1,19 +1,20 @@
 from django.urls import path
-from job.views import (
-    JOB_USER, HOME, JOB, ABOUT, CONTACT, JOB_DETAILS, apply, 
-    SIGN_UP, USER_LOGIN, USER_LOGOUT, user_profile, password_change,
-    filter_data, all_applied_list, filter_jobs_by_end_date, 
-    ADD_JOB, job_list, candidatelist, edit_jobdetails, 
-    emp_dash, EMPLOYER_SIGNUP, EMPLOYER_LOGIN, Employer_LOGOUT, 
-    emp_profile, emp_password_change, ADMIN_DASHBOARD, ADMIN_LOGIN, 
-    ADMIN_LOGOUT, admin_profile, admin_password_change, VIEWS_USERS, 
-    DELETE_USER, recruiter_pending, CHANGE_STATUS, emplpyer_accept, 
-    employer_reject, employer_all, DELETE_EMPLOYER
-)
+# from job.views import (
+#     JOB_USER, HOME, JOB, ABOUT, CONTACT, JOB_DETAILS, apply, 
+#     SIGN_UP, USER_LOGIN, USER_LOGOUT, user_profile, password_change,
+#     filter_data, all_applied_list, filter_jobs_by_end_date, 
+#     ADD_JOB, job_list, candidatelist, edit_jobdetails, 
+#     emp_dash, EMPLOYER_SIGNUP, EMPLOYER_LOGIN, Employer_LOGOUT, 
+#     emp_profile, emp_password_change, ADMIN_DASHBOARD, ADMIN_LOGIN, 
+#     ADMIN_LOGOUT, admin_profile, admin_password_change, VIEWS_USERS, 
+#     DELETE_USER, recruiter_pending, CHANGE_STATUS, emplpyer_accept, 
+#     employer_reject, employer_all, DELETE_EMPLOYER
+# )
 from .views import filter_jobs_by_end_date
 from job.views import *
 urlpatterns = [
     #! FOR JOBSEEKER SIDE
+    path('notifications/', notifications_view, name='notifications'),
     path('job_user/', JOB_USER, name='job_user'),
     path('', HOME, name='home'),
     path('job/', JOB, name='job'),

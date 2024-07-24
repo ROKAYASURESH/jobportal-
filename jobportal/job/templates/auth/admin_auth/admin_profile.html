@@ -1,6 +1,5 @@
-
-
 {% extends 'admin_dashboard/index.html' %}
+{% block title%}Profile{% endblock %}
 {% block main %}
 {% load static %}
 
@@ -8,89 +7,88 @@
 <link rel="stylesheet" href="{% static 'page/profile.css' %}">
 {% endblock css %}
 
-  <section>
+<section>
+  <div class="card1">
+    <div class="card">
+      <div class="left-container">
+        {% if profile.profile_picture %}
+        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="detail_image"
+          style="max-width: 200px;">
+        {% else %}
+        <p><img src="{% static 'images/profile.png' %}" alt="" class="detail_image"> </p>
+        {% endif %}
 
-    <div class="card1">
-      <div class="card">
-        <div class="left-container">
-          {% if profile.profile_picture %}
-          <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="detail_image"
-            style="max-width: 200px;">
-          {% else %}
-          <p><img src="{% static 'images/profile.png' %}" alt="" class="detail_image"> </p>
-          {% endif %}
+        <!-- <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="Profile pic"> -->
+        <h2>{{ user.username }}</h2>
+        <p>Admin</p>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          update
+        </button>
+      </div>
+      <div class="right-container">
+        <h3>My Profile</h3>
+        <table>
+          <tr>
+            <td>username :</td>
+            <td>{{ user.username }}</td>
+          </tr>
 
-          <!-- <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="Profile pic"> -->
-          <h2>{{ user.username }}</h2>
-          <p>Admin</p>
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            update
-          </button>
-        </div>
-        <div class="right-container">
-          <h3>My Profile</h3>
-          <table>
-            <tr>
-              <td>username :</td>
-              <td>{{ user.username }}</td>
-            </tr>
-
-            <tr>
-              <td> Email:</td>
-              <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-              <td>Contact NO :</td>
-              <td>{{ profile.phone_number }}</td>
-            </tr>
-            <!-- <tr>
+          <tr>
+            <td> Email:</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          <tr>
+            <td>Contact NO :</td>
+            <td>{{ profile.phone_number }}</td>
+          </tr>
+          <!-- <tr>
               <td>Email :</td>
               <td></td>
             </tr> -->
-            <tr>
-              <td>Address :</td>
-              <td>{{ profile.address }}</td>
-            </tr>
-          </table>
-          <div class="social-icons">
-            <a href="#"><i class="fa fa-facebook-f"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-github"></i></a>
-          </div>
+          <tr>
+            <td>Address :</td>
+            <td>{{ profile.address }}</td>
+          </tr>
+        </table>
+        <div class="social-icons">
+          <a href="#"><i class="fa fa-facebook-f"></i></a>
+          <a href="#"><i class="fa fa-twitter"></i></a>
+          <a href="#"><i class="fa fa-linkedin"></i></a>
+          <a href="#"><i class="fa fa-github"></i></a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Profile</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="post" enctype="multipart/form-data" style="text-align: left !important;">
-            {% csrf_token %}
-            {{ profile_form}}
-
-            <button type="submit" class="btn btn-primary">Update</button>
-          </form>
-        </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
-        </div> -->
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Profile</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data" style="text-align: left !important;">
+          {% csrf_token %}
+          {{ profile_form}}
+
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
 
 
 

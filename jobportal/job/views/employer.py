@@ -3,16 +3,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-from datetime import date
 from job.models import *
-from datetime import datetime, timedelta
 from django.contrib.auth.forms import PasswordChangeForm
-from job.form import AdminProfileUpdateForm, AdminJobseekerUpdateForm, AdminEmployerUpdateForm
+from job.form import AdminEmployerUpdateForm
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 #! EMPLOYER _DASHBOARD
 def emp_dash(request):
@@ -71,8 +70,25 @@ def EMPLOYER_SIGNUP(request):
             user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
             Employers.objects.create(user=user, mobile=contact, image=image, gender=gender, company=company, is_employer = True, status='pending')
             messages.success(request, f'Registration successful, {firstname}! Welcome JopPortal')
-            return redirect('employer_login')
-        
+            # Subject and message for the admin
+            admin_subject = f'New Employer Registration: {firstname} {lastname}'
+            admin_message = f"Hello Admin,\n\nA new employer has just registered on JobPortal. Here are the details:\n\nName: {firstname} {lastname}\nEmail: {email}\nContact: {contact}\nCompany: {company}\n\nPlease review their information and approve their account if everything is in order.\n\nBest regards,\nJobPortal Team"
+            from_email = email  # Use user's email as the sender
+            # Replace with your own email
+            to_admin = ['sureshrokaya@ismt.edu.np']
+
+            # Subject and message for the user
+            user_subject = f'Welcome to JobPortal, {firstname}!'
+            user_message = f"Dear {firstname},\n\nThank you for registering as an employer on JobPortal. We are excited to have you join our community.\n\nOur team is currently reviewing your registration details. You will receive an update once your account has been approved.\n\nIn the meantime, feel free to explore our platform and get ready to post your job vacancies.\n\nBest regards,\nJobPortal Team"
+            to_user = [email]
+
+         
+            # Send email to admin
+            send_mail(admin_subject, admin_message, from_email, to_admin)
+            # Send confirmation email to user
+            send_mail(user_subject, user_message, from_email, to_user)
+            return redirect('employer_login')  # Replace 'dashboard' with the name of your success page URL pattern
+           
         except ValidationError as e:
             for error in e.messages:
                 messages.error(request, error)
