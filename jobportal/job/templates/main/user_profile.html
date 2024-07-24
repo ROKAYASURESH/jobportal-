@@ -1,0 +1,206 @@
+{% extends 'base/base.html' %}
+{% block title%}Find-Job {% endblock %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    section {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+  
+    .card1 {
+      width: 100%;
+      max-width: 1000px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+  
+    .card {
+      display: flex;
+      flex-direction: row;
+    }
+  
+    .left-container {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+    }
+  
+    .left-container img.detail_image {
+      border-radius: 50%;
+      border: 4px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .left-container h2 {
+      margin: 15px 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+  
+    .left-container p {
+      font-size: 18px;
+      color: #777;
+    }
+  
+    .right-container {
+      flex: 2;
+      padding: 20px;
+    }
+  
+    .right-container h3 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+  
+    .right-container table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    .right-container td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    .right-container td:first-child {
+      font-weight: 600;
+      color: #333;
+    }
+  
+    .social-icons {
+      margin-top: 20px;
+      text-align: center;
+      
+    }
+  
+    .social-icons a {
+      
+        border-radius: 50%;
+      color: #333;
+      font-size: 20px;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+  
+    .social-icons a:hover {
+      color: #007bff;
+    }
+  
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+  
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  
+    .modal-content {
+      border-radius: 8px;
+    }
+  
+    .modal-header {
+      border-bottom: none;
+    }
+  
+    .modal-body form {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .modal-body form button {
+      margin-top: 20px;
+    }
+  </style>
+  
+  <section style="background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQAlAMBIgACEQEDEQH/xAAaAAACAwEBAAAAAAAAAAAAAAAEBQABAwIH/8QAKBAAAgIBAgYDAAIDAAAAAAAAAAMBAmERMQQFE0FCUQYhUjKREhSB/8QAGAEBAQEBAQAAAAAAAAAAAAAAAAECBQP/xAAYEQEBAQEBAAAAAAAAAAAAAAAAAREiIf/aAAwDAQACEQMRAD8A87IQh0nBQhZcRqBRIiTStDSqxqsYrJf+ATCzuFDQJ0ydPAbCpJ0hoBlZU0DpUcSsaA9CgqyzO1BowIdzWTkIohCAQhCAQsh1WoErU2osulAlawrOijaqsG61BFFGQLVODWqQyicGtUYJoB6OCdDAxhGC+gTQrlODiycDWyMGdkl0KbKMbrG10g11YLoWXoY2oMWKBmULAFMaFG16mUxoVFEIQDqsam9KnFKhSqktV2ugUtZyqgapZBFKC1qwdJWGKUZtGS04N6IwFKSEUQZ0AwjBfQwMqowX0ME0KbIwY3Rgc2SYXSNCZicArFDlqgNqjUCdqwRixu1e4E6hqBWygNeowbTcFbU1AKQ6mPshUbqgLVUHVAYqDKiU0D00Bk1D0VJQSlYclZgiowTUxR2pQWtWCJpsGKWYqsapwX0cB1VlysgWXTgHarA2usFbQoTtXuBOWN3VAH1NBQ6m4C6g1dXcXvqbiFjq7gTYGLo3AmwagCtH2Q7tH2Q0NVBqQFQamTNDBAwQLkyMESShiiNhijsLUW2GCbHnQxTGwaqABNtg1VzNUbSIO7VjQwow7ln0QZsiAN0BTLgbrABPgAeHOsAPk3Avf3F7w987i98mogB3cBcGuncBcbgGtuQq25DQ6VIYmwAuQpViBmiwem4qTcNTczQ3RcPTfInSwNU0xQ5UwLW3InW0Jo4yptV2TqW5FsOLlxAZduQZrDC7jBjiyDpzAB1zprQNzDURk6+uoA+xs6+4E65qAd1tdQJsm7bbgjZNDG0/ZZxM/ZDQqkhC7gkGtLAMVXC1MyK13CVsIHCmhS25E62hS3GLA4W7IRR+RPRxtV+SYG1X5L6+RXDy+vJMDGz8mF3ZA7PyZXdkuAhjsgrWmTHAzGlwdNZr3BG3KYwGYw1IOW3BmWOmXMLTqaFTP2Q5IEWXE6FEA1rbQ3pcDg0raQo+jcm9G5Ftbz6k2re3qTIZ1dk1h2RZW9vUncMt6kYGUPyX1si/qW9STqW9T/QwHy/JnZ+QOWW9T/RnLJ9SMBV3ZMLtMLXn1Jla8+pA1YwHvc5tacmUzqaF2tqckKCIQhANqpmwQvg/8jBbtOwUri6wT1RKuX1nsGK5XWe0AyuPrG4anmVIM3QQrk9Z8YDFcjpPiYK5rSO8BqucrjvBn0ar+P0mP4hFPjlZ8Sl88XHlATT5AuPKCdK5j4zWfGC5+MV/EG8fI1x5HU/JF6fygz0A7fGqx4A9/j1I8Q+/yJc+UGDOfLnygvQXM5DSPEDbyWseIydztc9wNvN1z3gs1C13Kax4gTeW1jtAydzRc6/cALuYUnvBuaAGcDFdfoFvw2ga3jazqCM4mJNAeVzEkLlus7EKMi9CiFRf/S4taPKSEIrqG3ja0nUcQ39EIB1HFOjzOo4t37IQDqOMf+5J/tv/AGQhBzPGP/ZU8W79lEAqeJbPkcy5k+UkIUcze0+Ulaz7khAKIUQCEIQI/9k=');">
+
+    <div class="card1">
+      <div class="card" style="background: rgb(170, 228, 228);">
+        <div class="left-container" >
+          {% if profile.image %}
+          <img src="{{ profile.image.url }}" alt="Profile Picture" class="detail_image"
+            style="max-width: 200px;">
+          {% else %}
+          <p><img src="{% static 'images/profile.png' %}" alt="" class="detail_image"> </p>
+          {% endif %}
+
+          <!-- <img src="https://static-00.iconduck.com/assets.00/profile-circle-icon-512x512-zxne30hp.png" alt="Profile pic"> -->
+          <h2>{{ user.first_name }}{{user.last_name}}</h2>
+          <p>JobSeeker</p>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            update
+          </button>
+        </div>
+        <div class="right-container" style="display: flex; align-items: center ; flex-direction: column; margin-top: 30px;">
+          <h3>My Profile</h3>
+          <table>
+            <tr>
+              <td>username :</td>
+              <td>{{ user.first_name }}{{user.last_name}}</td>
+            </tr>
+
+            <tr>
+              <td> Email:</td>
+              <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+              <td>Gender :</td>
+              <td>{{ profile.gender}}</td>
+            </tr>
+          </table>
+          <div class="social-icons">
+            <a href="#"><i class="fa fa-facebook-f"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-github"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Profile</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" enctype="multipart/form-data" style="text-align: left !important;">
+            {% csrf_token %}
+            {{ profile_form}}
+
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+
+
+{% endblock %}

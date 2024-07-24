@@ -16,6 +16,8 @@ urlpatterns = [
     path('user_signup/',  SIGN_UP, name='user_signup'),
     path('user_login/',  USER_LOGIN, name='user_login'),
     path('logout/',  USER_LOGOUT, name='logout'),
+     path('user/profile/', user_profile, name='user_profile'),
+    path('password_change/' , password_change, name="password_change"),
 
     # AJAX
     path('product/filter-data',filter_data,name="filter-data"),
@@ -55,7 +57,7 @@ urlpatterns = [
     path('employer_all',  employer_all, name='employer_all'),
     path('delete_employer<int:id>',  DELETE_EMPLOYER, name='delete_employer'),
     
-    path('password_change/' , password_change, name="password_change"),
+    
 
 
 ]

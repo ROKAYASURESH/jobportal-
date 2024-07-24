@@ -9,7 +9,7 @@ from datetime import date
 from .models import *
 from datetime import datetime, timedelta
 
-from .form import AdminProfileUpdateForm
+from .form import AdminProfileUpdateForm, AdminJobseekerUpdateForm, AdminEmployerUpdateForm
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -203,6 +203,25 @@ def USER_LOGOUT(request):
     logout(request)
     messages.success(request, 'You have successfully logged out,')
     return redirect('user_login')
+
+def user_profile(request):
+    # Get or create the JobSeekers profile for the current user
+    profile, created = JobSeekers.objects.get_or_create(user=request.user)
+    profile_form = AdminJobseekerUpdateForm(instance=profile)
+
+    if request.method == "POST":
+        profile_form = AdminJobseekerUpdateForm(request.POST, request.FILES, instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('user_profile')
+
+    context = {
+        'profile_form': profile_form,
+        'user': request.user,
+        'profile': profile,  # Updated to directly pass the profile object
+    }
+    return render(request, "main/user_profile.html", context)
+
 # ==================END========================
 
 '''=================================================================
@@ -306,25 +325,10 @@ def EMPLOYER_LOGIN(request):
 
 
 def emp_profile(request, id):
+    employer=AdminEmployerUpdateForm(user=request.user)
 
-    employer = get_object_or_404(Employers, id=id)
-
-    if request.method == 'POST':
-        employer.mobile = request.POST.get('mobile')
-        employer.gender = request.POST.get('gender')
-        employer.company = request.POST.get('company')
-        employer.status = request.POST.get('status')
-        
-        if 'image' in request.FILES:
-            employer.image = request.FILES['image']
-
-        employer.save()
-        return redirect('emp_profile', id=employer.id)  # Redirect to the same profile page after saving
-
-    user = request.user
-    context = {
-        'user': user,
-        'employer': employer,
+    context={
+        'employer':employer,
     }
     return render(request, "auth/employer/emp_profile.html", context)
 
