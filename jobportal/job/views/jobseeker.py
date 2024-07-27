@@ -136,11 +136,14 @@ def CONTACT(request):
 # #! JOBSEEKER JOB_DETAIL PAGE: =======================
 def JOB_DETAILS(request, id):
     job=Job.objects.get(id=id)
-    context={
-        'job':job
-    }
-    return render(request, 'main/job_details.html', context)
 
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    saved_jobs = user_profile.saved_jobs.all()
+    return render(request, 'main/job_details.html', {
+        'job': job,
+        'saved_jobs': saved_jobs
+    })
+ 
 
 
 '''=================================================================
@@ -281,16 +284,35 @@ def apply(request, id):
 
     if job.end_date < today_date:
         messages.error(request, 'Date expired')
-    elif job.start_date > today_date:
+    elif job.creationdate > today_date:
         messages.error(request, 'Job not open yet')
     else:
         if request.method == "POST":
             cv = request.FILES.get('cv')
             if cv:
                 Apply.objects.create(student=student, job=job, cv=cv, applydate=today_date)
+                # Remove the job from the user's saved list
+                user_profile, created = UserProfile.objects.get_or_create(user=user)
+                if job in user_profile.saved_jobs.all():
+                    user_profile.saved_jobs.remove(job)
+                
                 messages.success(request, 'Application submitted successfully.')
-                return redirect("home")
+                return redirect("saved_jobs_view")  # Redirect back to the saved jobs view
             else:
                 messages.error(request, 'CV file is missing.')
-
     return render(request, "main/apply.html")
+
+
+def save_job_for_later(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile.saved_jobs.add(job)
+    return redirect('home')
+
+def saved_jobs_view(request):
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    saved_jobs = user_profile.saved_jobs.all()
+    return render(request, 'main/laterlist.html', {
+        'saved_jobs': saved_jobs
+    })
+   

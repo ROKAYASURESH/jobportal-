@@ -1,0 +1,27 @@
+    <!-- Modal -->
+    {% extends 'base/base.html' %}
+    {% block title%} HOME{% endblock %}
+    {% load static %}
+    {% block content %}
+       
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'page/login_register.css' %}">
+    {% endblock %}
+    <section class="containers container py-3 my-5">
+     
+<div class="alert alert-success" role="alert">
+    You have chosen to apply for this vacancy later. It has been saved to your list for future reference.
+</div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+       
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </section>
+    
+    
+    
+    
+                
+        {% endblock %}

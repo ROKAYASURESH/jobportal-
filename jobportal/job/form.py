@@ -27,7 +27,7 @@ class AdminJobseekerUpdateForm(forms.ModelForm):
 class AdminEmployerUpdateForm(forms.ModelForm):
     class Meta:
         model =Employers
-        fields = ['mobile', 'image', 'company', 'gender', 'company_des']
+        fields = ['mobile', 'image', 'company', 'web', 'company_des']
         widgets = {
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'mobile': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number.'}),

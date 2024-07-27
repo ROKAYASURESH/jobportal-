@@ -7,7 +7,7 @@
 
     <!-- Hero Area Start-->
     <div class="slider-area ">
-    <!-- <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg' }">
+        <!-- <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg' }">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
@@ -30,7 +30,8 @@
                     <div class="single-job-items mb-50 border rounded">
                         <div class="job-items">
                             <div class="company-img company-img-details">
-                                <a href="#"><img src="{{job.employers.image.url}}" alt="" width="100" class="border"></a>
+                                <a href="#"><img src="{{job.employers.image.url}}" alt="" width="100"
+                                        class="border"></a>
 
                             </div>
                             <div class="job-tittle">
@@ -45,8 +46,8 @@
                             </div>
                         </div>
                     </div>
-                      <!-- job single End -->
-                   
+                    <!-- job single End -->
+
                     <div class="job-post-details">
                         <div class="post-details1 mb-50">
                             <!-- Small Section Tittle -->
@@ -56,30 +57,30 @@
                             <p>{{job.des}}</p>
                         </div>
                         <div class="post-details2  mb-50">
-                             <!-- Small Section Tittle -->
+                            <!-- Small Section Tittle -->
                             <div class="small-section-tittle">
                                 <h4>Required Knowledge, Skills, and Abilities</h4>
                             </div>
-                           <ul>
-                               <li>System Software Development</li>
-                               <li>Mobile Applicationin iOS/Android/Tizen or other platform</li>
-                               <li>Research and code , libraries, APIs and frameworks</li>
-                               <li>Strong knowledge on software development life cycle</li>
-                               <li>Strong problem solving and debugging skills</li>
-                           </ul>
+                            <ul>
+                                <li>System Software Development</li>
+                                <li>Mobile Applicationin iOS/Android/Tizen or other platform</li>
+                                <li>Research and code , libraries, APIs and frameworks</li>
+                                <li>Strong knowledge on software development life cycle</li>
+                                <li>Strong problem solving and debugging skills</li>
+                            </ul>
                         </div>
                         <div class="post-details2  mb-50">
-                             <!-- Small Section Tittle -->
+                            <!-- Small Section Tittle -->
                             <div class="small-section-tittle">
                                 <h4>Education + Experience</h4>
                             </div>
-                           <ul>
-                               <li>3 or more years of professional design experience</li>
-                               <li>Direct response email experience</li>
-                               <li>Ecommerce website design experience</li>
-                               <li>Familiarity with mobile and web apps preferred</li>
-                               <li>Experience using Invision a plus</li>
-                           </ul>
+                            <ul>
+                                <li>3 or more years of professional design experience</li>
+                                <li>Direct response email experience</li>
+                                <li>Ecommerce website design experience</li>
+                                <li>Familiarity with mobile and web apps preferred</li>
+                                <li>Experience using Invision a plus</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -88,36 +89,42 @@
                 <div class="col-xl-4 col-lg-4">
                     <div class="post-details3  mb-50">
                         <!-- Small Section Tittle -->
-                       <div class="small-section-tittle">
-                           <h4>Job Overview</h4>
-                       </div>
-                      <ul>
-                          <li>Posted date : <span>12 Aug 2019</span></li>
-                          <li>Location : <span>New York</span></li>
-                          <li>Vacancy : <span>02</span></li>
-                          <li>Job nature : <span>Full time</span></li>
-                          <li>Salary :  <span>$7,800 yearly</span></li>
-                          <li>Application date : <span>12 Sep 2020</span></li>
-                      </ul>
-                     <div class="apply-btn2">
-                        <a href="{% url 'applyforjob' job.id %}" class="btn border-3 rounded"  >Apply Now</a>
+                        <div class="small-section-tittle">
+                            <h4>Job Overview</h4>
+                        </div>
+                        <ul>
+                            <li>Posted date : <span>{{job.creationdate}}</span></li>
+                            <li>Location : <span>{{job.location}}</span></li>
+                            <li>Vacancy : <span>{{job.vacency}}</span></li>
+                            <li>Job nature : <span>{{job.job_type.job_type}}</span></li>
+                            <li>Salary : <span>₹{{job.salary}}</span></li>
+                            <li>Application date : <span>{{job.end_date}}</span></li>
+                        </ul>
+                        <div class="apply-btn2">
+                            <a href="{% url 'applyforjob' job.id %}" class="btn border-3 rounded">Apply Now</a>
+                            {% if job not in saved_jobs %}
+                            <a href="{% url 'save_job_for_later' job.id %}" class="btn border-3 rounded">save for
+                                later</a>
 
-                        <!-- <a href="#" class="btn">Apply Now</a> -->
-                     </div>
-                   </div>
+                            {% else %}
+
+                            {% endif %}
+                            <!-- <a href="#" class="btn">Apply Now</a> -->
+                        </div>
+                    </div>
                     <div class="post-details4  mb-50">
                         <!-- Small Section Tittle -->
-                       <div class="small-section-tittle">
-                           <h4>Company Information</h4>
-                       </div>
-                          <span>{{job.employers.company}}</span>
-                          <p>{{ job.employers.company_des|truncatewords:"20"}}.</p>
+                        <div class="small-section-tittle">
+                            <h4>Company Information</h4>
+                        </div>
+                        <span>{{job.employers.company}}</span>
+                        <p>{{ job.employers.company_des|truncatewords:"20"}}.</p>
                         <ul>
                             <li>Name: <span>Colorlib </span></li>
                             <li>Web : <span> colorlib.com</span></li>
                             <li>Email: <span>carrier.colorlib@gmail.com</span></li>
                         </ul>
-                   </div>
+                    </div>
                 </div>
             </div>
         </div>

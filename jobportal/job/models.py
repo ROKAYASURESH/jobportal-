@@ -15,11 +15,11 @@ class JobSeekers(models.Model):
 #! EMPLOYERS: ==================================================   
 class Employers(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
-    mobile=models.CharField(max_length=15, null= True)
-    image=models.ImageField(null=True, upload_to='user_profile')
-    gender=models.CharField(max_length=10, null=True)
     company=models.CharField(max_length=200, null=True)
     company_des=models.CharField(max_length=400, null=True)
+    mobile=models.CharField(max_length=15, null= True)
+    image=models.ImageField(null=True, upload_to='user_profile')
+    web=models.CharField(max_length=10, null=True)
     is_employer = models.BooleanField(default=False)
     status=models.CharField(max_length=20, null=True)
 
@@ -32,16 +32,6 @@ class Job_type(models.Model):
 
     def __str__(self):
         return self.job_type
-class Required_Knowledge(models.Model):
-    requirement = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.requirement
-class EducationExperience(models.Model):
-    education = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.education
 
 #! JOB_EXPERIENCE: ====================================
 class Experience(models.Model):
@@ -71,7 +61,7 @@ class Notification(models.Model):
 #! end
 class Job(models.Model):
     employers = models.ForeignKey('Employers', on_delete=models.CASCADE)
-    start_date = models.DateField()
+    vacency = models.IntegerField(null=True)
     end_date = models.DateField()
     title = models.CharField(max_length=200)
     salary = models.CharField(max_length=30)
@@ -89,6 +79,20 @@ class Job(models.Model):
     def remaining_days(self):
         return (self.end_date - date.today()).days
     
+class Required_Knowledge(models.Model):
+    job=models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
+    requirement = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.requirement
+    
+class EducationExperience(models.Model):
+    job=models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
+    education = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.education
+  
 #! start
 from django.db import models
 from django.db.models.signals import post_save
@@ -123,5 +127,14 @@ class AdminProfile(models.Model):
     address = models.CharField(max_length=100)
 
     def __str__(self) -> str:
+        return self.user.username
+    
+
+    # LATER
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    saved_jobs = models.ManyToManyField(Job, related_name='saved_by')
+
+    def __str__(self):
         return self.user.username
     

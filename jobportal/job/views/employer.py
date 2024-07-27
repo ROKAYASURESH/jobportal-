@@ -35,7 +35,6 @@ def EMPLOYER_SIGNUP(request):
         confirm_password = request.POST['confirm_password']
         email = request.POST['email']
         contact = request.POST['contact']
-        gender = request.POST['gender']
         company = request.POST['company']
 
         try:
@@ -68,7 +67,7 @@ def EMPLOYER_SIGNUP(request):
             
             # Create the user and associated Employer profile
             user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
-            Employers.objects.create(user=user, mobile=contact, image=image, gender=gender, company=company, is_employer = True, status='pending')
+            Employers.objects.create(user=user, mobile=contact, company=company, image=image, is_employer = True, status='pending')
             messages.success(request, f'Registration successful, {firstname}! Welcome JopPortal')
             # Subject and message for the admin
             admin_subject = f'New Employer Registration: {firstname} {lastname}'
@@ -168,28 +167,46 @@ def emp_password_change(request):
 
 #! EMPLOYER ADD_JOB FORM: ===================================================
 def ADD_JOB(request):
-    if request.method =="POST":
-        job_title= request.POST['job_title']
-        start_date= request.POST['start_date']
-        end_date= request.POST['end_date']
-        salary= request.POST['salary']
-        image=request.FILES ['image']
-        des= request.POST['desc']
-        experience= request.POST['experience']
-        location= request.POST['location']
-        skills= request.POST['skill']
-        employer=Employers.objects.get(user=request.user)
+    if request.method == "POST":
+        job_title = request.POST['job_title']
+        vacency = request.POST['vacency']
+        end_date = request.POST['end_date']
+        salary = request.POST['salary']
+        image = request.FILES['image']
+        des = request.POST['desc']
+        experience = request.POST['experience']
+        location = request.POST['location']
+        skills = request.POST['skill']
+        
+        employer = Employers.objects.get(user=request.user)
+        
         try:
-            Job.objects.create(employers=employer, title=job_title, start_date=start_date, end_date=end_date, salary=salary, image=image, des=des, 
-                           experience=experience, location=location, skills=skills )
+            job = Job.objects.create(
+                employers=employer, title=job_title, vacency=vacency, 
+                end_date=end_date, salary=salary, image=image, des=des, 
+                experience=experience, location=location, skills=skills
+            )
             messages.success(request, 'Job Detail has been added')
+
+            # Send email to job seekers
+            job_seekers = JobSeekers.objects.all()
+            recipient_list = [job_seeker.user.username for job_seeker in job_seekers if job_seeker.user.username]
+            
+            send_mail(
+                subject='New Job Posting: ' + job_title,
+                message=f'A new job "{job_title}" has been posted. by {employer.user.first_name} {employer.user.last_name} Check it out!',
+                from_email='your-email@example.com',
+                recipient_list=recipient_list,
+                fail_silently=False,
+            )
+            
             return redirect('emp_dash')
         except ObjectDoesNotExist:
             messages.error(request, "Recruiter matching query does not exist.")
         except Exception as e:
             messages.error(request, f"Something went wrong: {str(e)}")
+    
     return render(request, "main/employer/emp_job.html")
-
 #! EMPLOYER JOB_LIST: =======================================================
 def job_list(request):
     employer = Employers.objects.get(user=request.user)
@@ -204,7 +221,7 @@ def edit_jobdetails(request, id):
     job = Job.objects.get(id=id)
     if request.method =="POST":
         job.title= request.POST['job_title']
-        start_date= request.POST['start_date']
+        vacency= request.POST['vacency']
         end_date= request.POST['end_date']
         job.salary= request.POST['salary']
         image= request.POST['image']
@@ -223,8 +240,8 @@ def edit_jobdetails(request, id):
         except Exception as e:
             messages.error(request, f"Something went wrong: {str(e)}")
         
-        if start_date:
-            job.start_date=start_date
+        if vacency:
+            job.vacency=vacency
             job.save()
         else:
             pass

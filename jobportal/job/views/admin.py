@@ -25,7 +25,6 @@ def ADMIN_DASHBOARD(request):
 
 #! ADMIN LOGIN: ===================================================
 def ADMIN_LOGIN(request):
-    error = ''
     if request.method == "POST":
         username=request.POST['username']
         password=request.POST['password']
@@ -94,6 +93,7 @@ def admin_password_change(request):
 def VIEWS_USERS(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
+    
     data = JobSeekers.objects.all()
     context={
         'data':data
@@ -101,39 +101,48 @@ def VIEWS_USERS(request):
     return render(request, "main/admin/views_user.html", context)
 
 #! JOBSEEKER DATA DELETE: ===========================================
+import os
+
 def DELETE_USER(request, id):
-    data =User.objects.get(id=id)
-    data.delete()
+    user = get_object_or_404(User, id=id)
+    try:
+        job_seeker = JobSeekers.objects.get(user=user)        
+        if job_seeker.image and os.path.isfile(job_seeker.image.path):
+            os.remove(job_seeker.image.path)
+        job_seeker.delete()
+    except JobSeekers.DoesNotExist:
+        pass
+    user.delete()
     return redirect('views_user')
 
 #! EMPLOYER ACCOUNT PENDING DATA SHOW: ===========
 def recruiter_pending(request):
     if not request.user.is_authenticated:
         return redirect('admin_login')
+    
     data =Employers.objects.filter(status='pending')
     context={
         'data':data
     }
-    return render(request, "main/admin/recruiter_pending.html", context)
+    return render(request, "main/admin/employer_pending.html", context)
 
 #! EMPLOYER PENDING ACCOUNT STATUS CHANGE FORM: ===
 def CHANGE_STATUS(request, id):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    
-    error=''
+   
     employers =Employers.objects.get(id=id)
     if request.method == "POST":
         status=request.POST['status']
         employers.status = status
         try:
             employers.save()
-            error='no'
+            messages.success(request, 'Your status was Change Successfully')
+            return redirect('emplpyer_accept')
         except:
-            error='yes'
+            messages.error(request, 'Something went wrong please try Again !!!!')
     context={
         'employers':employers,
-        'error':error
     }
     return render(request, "main/admin/change_status.html", context)
 
