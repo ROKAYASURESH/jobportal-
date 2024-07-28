@@ -22,4 +22,50 @@
         <span>Date Line: {{i.end_date}}</span>
     </div>
 </div>
+
 {% endfor %}
+                            <!--Pagination Start  -->
+                            <div class="pagination-area pb-115 text-center">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="single-wrap d-flex justify-content-center">
+                                                <nav aria-label="Page navigation example">
+                                                    <ul class="pagination ms-auto">
+                                                        {% if data.has_previous %}
+                                                            <li class="page-item"><a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a></li>
+                                                        {% endif %}
+                                                
+                                                        {% if data.number > 2 %}
+                                                            <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                                            {% if data.number > 3 %}
+                                                                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                
+                                                        {% for n in data.paginator.page_range %}
+                                                            {% if n >= data.number|add:'-1' and n <= data.number|add:'1' %}
+                                                                <li class="page-item {% if n == data.number %}active{% endif %}">
+                                                                    <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                
+                                                        {% if data.number < data.paginator.num_pages|add:'-1' %}
+                                                            {% if data.number < data.paginator.num_pages|add:'-2' %}
+                                                                <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                                                            {% endif %}
+                                                            <li class="page-item"><a class="page-link" href="?page={{ data.paginator.num_pages }}">{{ data.paginator.num_pages }}</a></li>
+                                                        {% endif %}
+                                                
+                                                        {% if data.has_next %}
+                                                            <li class="page-item"><a class="page-link" href="?page={{ data.next_page_number }}">Next</a></li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Pagination End  -->

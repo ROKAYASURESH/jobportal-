@@ -38,6 +38,11 @@ def HOME(request):
     job = Job.objects.all()
     list = []
 
+    paginator=Paginator(job, 4) #number of items to display per page
+    page_num=request.GET.get('page') #current page /127.0.0.1:8000/?page=1
+    job=paginator.get_page(page_num)#fetch the data from current page
+    total=job.paginator.num_pages #3
+
     if user.is_authenticated:
         try:
             student = JobSeekers.objects.get(user=user)
@@ -52,10 +57,15 @@ def HOME(request):
     context = {
         'job': job,
         'list': list,
+        'job':job,
+        'total':total,
+        'num':[i+1 for i in range(total)]#for i in range(3):#  [1,2,3]
     }
     return render(request, 'main/home.html', context)
 
 #! JOBSEEKER FIND_JOB PAGE: =======================
+from django.core.paginator import Paginator
+
 def JOB(request):
     # if not request.user.is_authenticated:
     #     return redirect('user_login')
@@ -65,6 +75,11 @@ def JOB(request):
     label = Experience.objects.all()
     jobs = Job.objects.all()
     job =Job.objects.all().count()
+
+    paginator=Paginator(jobs, 4) #number of items to display per page
+    page_num=request.GET.get('page') #current page /127.0.0.1:8000/?page=1
+    jobs=paginator.get_page(page_num)#fetch the data from current page
+    total=jobs.paginator.num_pages #3
 
     list = []
     if user.is_authenticated:
@@ -83,7 +98,12 @@ def JOB(request):
         'jobs':jobs,
         'job':job,
         'label':label,
-        'list':list
+        'list':list,
+       
+        'total':total,
+        'num':[i+1 for i in range(total)]#for i in range(3):#  [1,2,3]
+       
+
     }
     return render(request, 'main/job.html', context)
 
@@ -136,12 +156,16 @@ def CONTACT(request):
 # #! JOBSEEKER JOB_DETAIL PAGE: =======================
 def JOB_DETAILS(request, id):
     job=Job.objects.get(id=id)
+    required_knowledge_list = job.required_knowledge_set.all()[:5]  # Limit to 5
+    educationexperience_list = job.educationexperience_set.all()[:5]  # Limit to 5
 
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     saved_jobs = user_profile.saved_jobs.all()
     return render(request, 'main/job_details.html', {
         'job': job,
-        'saved_jobs': saved_jobs
+        'saved_jobs': saved_jobs,
+        'required_knowledge_list': required_knowledge_list,
+        'educationexperience_list':educationexperience_list
     })
  
 

@@ -174,18 +174,58 @@ def ADD_JOB(request):
         salary = request.POST['salary']
         image = request.FILES['image']
         des = request.POST['desc']
-        experience = request.POST['experience']
         location = request.POST['location']
         skills = request.POST['skill']
+        job_type_id = request.POST['job_type']
+        experience_id = request.POST['label']
+
+        # For in Job Foregin key
+        job_type = Job_type.objects.get(id=job_type_id)
+        experience = Experience.objects.get(id=experience_id)
+
+        # 
+        required_knowledge = request.POST.getlist('required_knowledge')
+        education_experience = request.POST.getlist('education_experience')
         
         employer = Employers.objects.get(user=request.user)
         
+        # 
+        errors = []
+        if not job_title:
+            errors.append('Job title is required.')
+        if not vacency:
+            errors.append('Vacancy is required.')
+        if not end_date:
+            errors.append('End date is required.')
+        if not salary:
+            errors.append('Salary is required.')
+        if not des:
+            errors.append('Description is required.')
+        if not location:
+            errors.append('Location is required.')
+        if not skills:
+            errors.append('Skills are required.')
+        
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, "main/employer/emp_job.html")
+        
+        # 
         try:
             job = Job.objects.create(
                 employers=employer, title=job_title, vacency=vacency, 
                 end_date=end_date, salary=salary, image=image, des=des, 
-                experience=experience, location=location, skills=skills
+                location=location, skills=skills, job_type=job_type, experiences=experience
             )
+              # Save Required Knowledge
+            for req in required_knowledge:
+                Required_Knowledge.objects.create(job=job, requirement=req)
+            
+            # Save Education Experience
+            for edu in education_experience:
+                EducationExperience.objects.create(job=job, education=edu)
+
             messages.success(request, 'Job Detail has been added')
 
             # Send email to job seekers
@@ -205,8 +245,13 @@ def ADD_JOB(request):
             messages.error(request, "Recruiter matching query does not exist.")
         except Exception as e:
             messages.error(request, f"Something went wrong: {str(e)}")
-    
-    return render(request, "main/employer/emp_job.html")
+    job_types = Job_type.objects.all()
+    experiences = Experience.objects.all()
+    return render(request, "main/employer/emp_job.html", {'job_types': job_types, 'experiences':experiences})
+
+
+
+
 #! EMPLOYER JOB_LIST: =======================================================
 def job_list(request):
     employer = Employers.objects.get(user=request.user)

@@ -67,11 +67,11 @@ class Job(models.Model):
     salary = models.CharField(max_length=30)
     image = models.ImageField(upload_to='job')
     des = models.CharField(max_length=400)
-    experience = models.CharField(max_length=400, null=True)
     location = models.CharField(max_length=150)
     skills = models.CharField(max_length=200)
     creationdate = models.DateField(auto_now_add=True)
     job_type = models.ForeignKey('Job_type', on_delete=models.CASCADE, null=True)
+    experiences = models.ForeignKey('Experience', on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
         return self.title
@@ -82,6 +82,10 @@ class Job(models.Model):
 class Required_Knowledge(models.Model):
     job=models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     requirement = models.CharField(max_length=200)
+    requirement2 = models.CharField(max_length=200, null=True)
+    requirement3 = models.CharField(max_length=200, null=True)
+    requirement4 = models.CharField(max_length=200, null=True)
+    requirement5 = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.requirement
@@ -89,6 +93,10 @@ class Required_Knowledge(models.Model):
 class EducationExperience(models.Model):
     job=models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     education = models.CharField(max_length=200)
+    education1 = models.CharField(max_length=200, null=True)
+    education2 = models.CharField(max_length=200, null=True)
+    education3 = models.CharField(max_length=200, null=True)
+    education4 = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.education

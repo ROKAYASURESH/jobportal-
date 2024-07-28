@@ -129,7 +129,9 @@
     .form button:hover {
         background: rgb(88, 56, 250);
     }
-
+textarea,select{
+    width: 100%;
+}
     /*Responsive*/
     @media screen and (max-width: 500px) {
         .form .column {
@@ -188,25 +190,93 @@
                 <input type="file" name="image" required />
             </div>
         </div>
-        <div class="input-box">
-            <label>Location</label>
-            <input type="text" name="location" placeholder="Enter email Location" required />
-        </div>
-        <div class="input-box">
-            <label>Experience</label>
-            <input type="text" name="experience" placeholder="Enter email Experience" required />
-        </div>
+        <div class="column">
+            <div class="input-box">
+                <label>Location</label>
+                <input type="text" name="location" placeholder="Enter email Location" required />
+            </div>
 
-        <div class="input-box">
-            <label>Skills</label>
-            <input type="text" name="skill" placeholder="Enter Skill" required />
+            <div class="input-box">
+                <label>Skills</label>
+                <input type="text" name="skill" placeholder="Enter Skill" required />
+            </div>
         </div>
 
         <div class="input-box">
             <label>Description</label>
-            <input type="text" name="desc" placeholder="Enter Description" required />
+            <textarea id="desc" name="desc" placeholder="Enter Description" cols="45" rows=""></textarea>
+            <!-- <input type="text" name="desc" placeholder="Enter Description" required /> -->
         </div>
-
+        <div class="column">
+        <div class="input-box">
+            <label for="job_type">Job Type:</label>
+            <select name="job_type" id="job_type" required>
+                {% for job_type in job_types %}
+                <option value="{{ job_type.id }}">{{ job_type.job_type }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-box">
+            <label for="job_type">Experience Level:</label>
+            <select name="label" id="label" required>
+                {% for exp in experiences %}
+                <option value="{{ exp.id }}">{{ exp.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="required_knowledge">Required Knowledge 1:</label>
+                <input type="text" id="required_knowledge" name="required_knowledge">
+            </div>
+            <div class="input-box">
+                <label for="required_knowledge">Required Knowledge 2:</label>
+                <input type="text" id="required_knowledge" name="required_knowledge">
+            </div>
+            <div class="input-box">
+                <label for="required_knowledge">Required Knowledge 3:</label>
+                <input type="text" id="required_knowledge" name="required_knowledge">
+            </div>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="required_knowledge">Required Knowledge 4:</label>
+                <input type="text" id="required_knowledge" name="required_knowledge">
+            </div>
+            <div class="input-box">
+                <label for="required_knowledge">Required Knowledge 5:</label>
+                <input type="text" id="required_knowledge" name="required_knowledge">
+            </div>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+            <div class="input-box">
+                <label for="education_experience">Education Experience:</label>
+                <input type="text" id="education_experience" name="education_experience">
+            </div>
+        </div>
 
 
         <button type="submit">Submit</button>
