@@ -25,6 +25,7 @@ urlpatterns = [
     path('save_job_for_later/<int:job_id>/', save_job_for_later, name='save_job_for_later'),
     path('saved_jobs/', saved_jobs_view, name='saved_jobs_view'),
     # JOBSEEKER AUTHENTICAION
+    path('search',SEARCH_JOB,name='search_job'),
     path('user_signup/',  SIGN_UP, name='user_signup'),
     path('user_login/',  USER_LOGIN, name='user_login'),
     path('logout/',  USER_LOGOUT, name='logout'),

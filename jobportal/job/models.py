@@ -19,7 +19,7 @@ class Employers(models.Model):
     company_des=models.CharField(max_length=400, null=True)
     mobile=models.CharField(max_length=15, null= True)
     image=models.ImageField(null=True, upload_to='user_profile')
-    web=models.CharField(max_length=10, null=True)
+    web=models.CharField(max_length=100, null=True)
     is_employer = models.BooleanField(default=False)
     status=models.CharField(max_length=20, null=True)
 

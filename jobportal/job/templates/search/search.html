@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block title%}Find-Job {% endblock %}
+{% load static %}
+{% block css %} {% endblock %}
+{% block content %}
+<div class="container">
+            {% if jobs %}
+            {% for i in jobs %}
+            <div class="single-job-items mb-30 border rounded">
+                <div class="job-items">
+                    <div class="company-img">
+                        <a href="#"><img src="{{i.image.url}}" alt="" width="100" height="100"
+                                style="border: 1px solid black; padding: 4px;"></a>
+
+                    </div>
+                    <div class="job-tittle job-tittle2">
+                        <a href="#">
+                            <h4>{{i.title}}</h4>
+                        </a>
+                        <ul>
+                            <li>{{i.employers.company}}</li>
+                            <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
+                            <li>{{i.job_type.job_type}}</li>
+                        </ul>
+                    </div>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="items-link items-link2 f-right">
+                    {% if i.id in list %}
+                    <a href="" class="btn-success" style="color:white; background-color: rgb(238, 159, 94);">Applied</a>
+                    {% else %}
+                    <a href="{% url 'job_details' i.id %}">Apply Now</a>
+                    {% endif %}
+                    <span>Date Line: {{ i.end_date }}</span>
+
+                </div>
+                {% else %}
+                <div class="items-link items-link2 f-right">
+                    <a href="{% url 'user_login' %}">Apply Now</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <center><img
+                    src="https://media.licdn.com/dms/image/D4E22AQGwdq1GJr83GQ/feedshare-shrink_800/0/1683947437304?e=2147483647&v=beta&t=COp_tmEWeCdVOLXUwzVk4swdVCBoCfAuZAGQf_SWOLo" alt="" width="600"></center>
+            {% endif %}
+
+        </div>
+{% endblock %}

@@ -5,17 +5,16 @@
 
 
     <main>
-
         <!-- slider Area Start-->
         <div class="slider-area ">
             <!-- Mobile Menu -->
             <div class="slider-active">
-                <div class="single-slider slider-height d-flex align-items-center" data-background="{% static 'assets/img/hero/h1_hero.jpg' %}">
+                <div class="single-slider slider-height d-flex align-items-center" data-background="https://www.rollingstone.com/wp-content/uploads/2021/12/Rolling-Stone-Lifestyle-Image-10.jpg?w=1600&h=900&crop=1">
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-6 col-lg-9 col-md-10">
                                 <div class="hero__caption">
-                                    <h1>Find the most exciting startup jobs</h1>
+                                    <h1 style="color: rgb(61, 61, 131);">Find the most exciting startup jobs</h1>
                                 </div>
                             </div>
                         </div>
@@ -210,14 +209,20 @@
                                     </ul>
                                 </div>
                             </div>
+                            {% if request.user.is_authenticated %}
                             <div class="items-link items-link2 f-right">
                                 {% if i.id in list %}
-                                <a href="">Applied</a>
+                                <a href="" style="color:white; background-color: rgb(238, 159, 94);">Applied</a>
                                 {% else %}
                                 <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                 {% endif %}
                                 <span>Date Line: {{ i.end_date }}</span>
                             </div>
+                            {% else %}
+                            <div class="items-link items-link2 f-right">
+                                <a href="{% url 'user_login' %}">Apply Now</a>
+                            </div>
+                            {% endif %}
                         </div>
                         {% endfor %}
                     </div>

@@ -3,7 +3,7 @@
 {% load static %}
 {% block css %} {% endblock %}
 {% block content %}
-<!--  -->
+<!--Remanging daya  -->
 <script>
     $(document).ready(function () {
         $('.filter-checkbox').change(function () {
@@ -85,12 +85,35 @@
     });
 </script>
 
+<!-- for title -->
+ <script>
+    $(document).ready(function () {
+    $("#job-title-select").on('change', function () {
+        var filter_value = $(this).val();
+        var filter_object = {
+            title: filter_value
+        };
+
+        $.ajax({
+            url: "{% url 'filter-data' %}",
+            data: filter_object,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res);
+                $("#filteredJob").html(res.data);
+            }
+        });
+    });
+});
+
+ </script>
+
 <main>
 
     <!-- Hero Area Start-->
     <div class="slider-area ">
         <div class="single-slider section-overly slider-height2 d-flex align-items-center"
-            data-background="{% static 'assets/img/hero/about.jpg' %}">
+            data-background="https://www.tvisha.com/data/category_images/job-portban-main-banner.jpg">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -281,15 +304,21 @@
                                     <div class="count-job mb-35">
                                         <span>{{job}} Jobs found</span>
                                         <!-- Select job items start -->
-                                        <div class="select-job-items">
-                                            <span>Sort by</span>
-                                            <select name="select">
+                                
+                                        <div class="select-job-items2">
+                                          
+                                            <select name="title" id="job-title-select">
                                                 <option value="">None</option>
-                                                <option value="">job list</option>
-                                                <option value="">job list</option>
-                                                <option value="">job list</option>
+                                                {% for job in jobs %}
+                                                <option value="{{ job.title }}">{{ job.title }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
+                                        <form class="d-flex" method="get" role="search" action="{% url 'search_job'%}">
+                                            
+                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                                            <button class="btn btn-outline-success" type="submit">Search</button>
+                                          </form>
                                         <!--  Select job items End-->
                                     </div>
                                 </div>
@@ -316,15 +345,21 @@
                                         </ul>
                                     </div>
                                 </div>
+                                {% if request.user.is_authenticated %}
                                 <div class="items-link items-link2 f-right">
                                     {% if i.id in list %}
-                                    <a href="" class="btn-success">Applied</a>
+                                    <a href="" class="btn-success" style="color:white; background-color: rgb(238, 159, 94);">Applied</a>
                                     {% else %}
                                     <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                     {% endif %}
                                     <span>Date Line: {{ i.end_date }}</span>
 
                                 </div>
+                                {% else %}
+                                <div class="items-link items-link2 f-right">
+                                    <a href="{% url 'user_login' %}">Apply Now</a>
+                                </div>
+                                {% endif %}
                             </div>
                             {% endfor %}
                             <!-- single-job-content -->

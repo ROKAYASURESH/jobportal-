@@ -70,14 +70,20 @@
                                             <li><a href="{% url 'home' %}">Home</a></li>
                                             <li><a href="{% url 'job' %}">Find a Jobs </a></li>
                                             <li><a href="{% url 'about' %}">About</a></li>
-                                            <li><a href="#">Page</a>
+                                            {% if user.is_authenticated %}
+                                            <li><a href="{% url 'saved_jobs_view' %}">Later Refer</a></li>
+                                            {% endif %}
+                                            <!-- <li><a href="#">Page</a>
                                                 <ul class="submenu">
+                                                    {% if user.is_authenticated %}
                                                     <li><a href="{% url 'saved_jobs_view' %}">Later Reference</a></li>
+                                    
+                                                    {% endif %}
                                                     <li><a href="single-blog.html">Blog Details</a></li>
                                                     <li><a href="elements.html">Elements</a></li>
                                                     <li><a href="job_details.html">job Details</a></li>
                                                 </ul>
-                                            </li>
+                                            </li> -->
                                             <li><a href="{% url 'contact' %}">Contact</a></li>
                                             <li class="notification">
                                                      <!--! Your navigation items-->

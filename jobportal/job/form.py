@@ -31,7 +31,7 @@ class AdminEmployerUpdateForm(forms.ModelForm):
         widgets = {
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'mobile': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your phone number.'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Gender.'}),
+            'web': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your Web link.'}),
             'company': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your company.'}),
             'company_des': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your company Desc.'}),
         }

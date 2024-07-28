@@ -107,8 +107,19 @@ def JOB(request):
     }
     return render(request, 'main/job.html', context)
 
+
+def SEARCH_JOB(request):
+   
+    query = request.GET['query']
+    jobs = Job.objects.filter(title__icontains = query)
+    print(jobs)
+    context = {
+        'jobs':jobs,
+    }
+    return render(request,'search/search.html',context)
 #! JOBSEEKER JOB_TYPE AND EXPERIENCE FIND Through Check_box AJAX filter:===
 def filter_data(request):
+    jobcount =Job.objects.all().count()
     job_type=request.GET.getlist('job_type[]')
     experience_ids = request.GET.getlist('experience[]')
     location = request.GET.get('location')
@@ -124,7 +135,7 @@ def filter_data(request):
     else:
         job= Job.objects.all().order_by('-id')
 
-    t = render_to_string('ajax/job.html', {'job':job})
+    t = render_to_string('ajax/job.html', {'job':job, 'jobcount':jobcount})
     return JsonResponse({'data': t})
 
 #! Remaning Days AJAX: ====================================
