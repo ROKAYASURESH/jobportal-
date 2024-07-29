@@ -33,16 +33,18 @@ def JOB_USER(request):
     return render(request, 'base/common.html')
 
 #! JOBSEEKER HOME PAGE: ========================
+from django.db.models import Count
 def HOME(request):
+    employers = Employers.objects.annotate(job_count=Count('job')).all()
     user = request.user
     job = Job.objects.all()
-    list = []
 
     paginator=Paginator(job, 4) #number of items to display per page
     page_num=request.GET.get('page') #current page /127.0.0.1:8000/?page=1
     job=paginator.get_page(page_num)#fetch the data from current page
     total=job.paginator.num_pages #3
-
+    
+    list = []
     if user.is_authenticated:
         try:
             student = JobSeekers.objects.get(user=user)
@@ -59,7 +61,9 @@ def HOME(request):
         'list': list,
         'job':job,
         'total':total,
-        'num':[i+1 for i in range(total)]#for i in range(3):#  [1,2,3]
+        'num':[i+1 for i in range(total)],#for i in range(3):#  [1,2,3],
+
+        'employers': employers
     }
     return render(request, 'main/home.html', context)
 
