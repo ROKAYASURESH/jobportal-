@@ -21,7 +21,17 @@
   <link rel="stylesheet" href="{% static 'emp/css/maruti-style.css' %}" />
   <link rel="stylesheet" href="{% static 'emp/css/maruti-media.css' %}" class="skin-color" />
 </head>
-
+<style>
+  /* Move the search box to the right */
+  .dataTables_filter {
+    float: right !important;
+    margin-left:1000px; /* Adjust margin as needed */
+    
+  }
+  tr{
+    text-align: center;
+  }
+</style>
 
 <body>
 
@@ -169,6 +179,8 @@
           'print'
         ]
       });
+        // Remove the search box after initialization
+  // $('.dataTables_filter').remove();
     });
   </script>
   <!-- Jquery Plugins, main Jquery -->

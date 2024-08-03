@@ -30,7 +30,9 @@
 .white-bg {
   background: #ffffff;
 }
-
+ul, ol{
+  padding: 0 !important;
+}
 .gray-bg {
   background: #f5f5f5;
 }
@@ -5655,7 +5657,7 @@ form.search-box .search-form a {
   color: #fb246a;
 }
 .our-services .single-services:hover .services-cap h5 a {
-  color: #fb246a;
+  color: #32fb24;
 }
 
 @media (max-width: 767px) {

@@ -28,20 +28,20 @@
                     style="border: 1px solid black; padding: 4px;"></a>
 
         </div>
-        <div class="job-tittle job-tittle2">
+        <div class="job-tittle job-tittle2" style="padding-top:20px ;">
             <a href="#">
                 <h4>{{i.title}}</h4>
             </a>
-            <ul>
-                <li>{{i.employers.company}}</li>
+            <ul style="margin: 0; padding: 0;">
+                <li><i class="fa-regular fa-building"></i>{{i.employers.company}}</li>
                 <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
-                <li>{{i.job_type.job_type}}</li>
+                <li><i class="fa-regular fa-clock"></i>{{i.job_type.job_type}}</li>
             </ul>
         </div>
     </div>
     <div class="items-link items-link2 f-right">
         <a href="job_details.html">Apply Now</a>
-        <span>Date Line: {{i.end_date}}</span>
+        <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{i.end_date}}</span>
     </div>
 </div>
 

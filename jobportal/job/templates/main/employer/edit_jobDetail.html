@@ -157,12 +157,12 @@
         <div class="column">
 
             <div class="input-box">
-                <label>Start Date</label>[{{job.vacency}}]
-                <input type="date" name="vacency" value="{{job.vacency}}" placeholder="Enter Vacency Number" />
+                <label>Vacency No. [{{job.vacency}}]</label>
+                <input type="number" name="vacency" value="{{job.vacency}}" placeholder="Enter Vacency Number" />
             </div>
 
             <div class="input-box">
-                <label>End Date</label>[{{job.end_date}}]
+                <label>End Date [{{job.end_date}}]</label>
                 <input type="date" name="end_date" value="{{job.end_date}}" placeholder="Enter End Date" />
             </div>
         </div>
@@ -183,11 +183,7 @@
             <label>Location</label>
             <input type="text" name="location" value="{{job.location}}" placeholder="Enter email Location" required />
         </div>
-        <div class="input-box">
-            <label>Experience</label>
-            <input type="text" name="experience" value="{{job.experience}}" placeholder="Enter email Experience"
-                required />
-        </div>
+        
 
         <div class="input-box">
             <label>Skills</label>

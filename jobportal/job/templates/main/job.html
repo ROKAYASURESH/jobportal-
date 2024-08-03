@@ -131,10 +131,10 @@
         <div class="container">
             <div class="row">
                 <!-- Left content -->
-                <div class="col-xl-3 col-lg-3 col-md-4">
+                <div class="col-xl-3 col-lg-3 col-md-4 ">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="small-section-tittle2 mb-45">
+                        <div class="col-12 ">
+                            <div class="small-section-tittle2 mb-45 ">
                                 <div class="ion"> <svg xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="12px">
                                         <path fill-rule="evenodd" fill="rgb(27, 207, 107)"
@@ -334,25 +334,25 @@
                                                 style="border: 1px solid black; padding: 4px;"></a>
 
                                     </div>
-                                    <div class="job-tittle job-tittle2">
+                                    <div class="job-tittle job-tittle2" style="padding-top:20px ;">
                                         <a href="#">
                                             <h4>{{i.title}}</h4>
                                         </a>
                                         <ul>
-                                            <li>{{i.employers.company}}</li>
+                                            <li><i class="fa-regular fa-building"></i>{{i.employers.company}}</li>
                                             <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
-                                            <li>{{i.job_type.job_type}}</li>
+                                            <li><i class="fa-regular fa-clock"></i>{{i.job_type.job_type}}</li>
                                         </ul>
                                     </div>
                                 </div>
                                 {% if request.user.is_authenticated %}
                                 <div class="items-link items-link2 f-right">
                                     {% if i.id in list %}
-                                    <a href="" class="btn-success" style="color:white; background-color: rgb(238, 159, 94);">Applied</a>
+                                    <a href="" class="btn-success" style="color:white; background-color: #00b372;">Already Apply</a>
                                     {% else %}
                                     <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                     {% endif %}
-                                    <span>Date Line: {{ i.end_date }}</span>
+                                    <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
 
                                 </div>
                                 {% else %}

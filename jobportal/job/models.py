@@ -40,7 +40,6 @@ class Experience(models.Model):
     def __str__(self):
         return self.label
 
-#! JOB DETAILS: ============================================   
 # ! notification  starr
 from django.db import models
 from django.db.models.signals import post_save
@@ -59,6 +58,8 @@ class Notification(models.Model):
         return f"Notification for {self.user.username}"
 
 #! end
+#! JOB DETAILS: ============================================   
+
 class Job(models.Model):
     employers = models.ForeignKey('Employers', on_delete=models.CASCADE)
     vacency = models.IntegerField(null=True)
@@ -100,7 +101,7 @@ class EducationExperience(models.Model):
 
     def __str__(self):
         return self.education
-  
+
 #! start
 from django.db import models
 from django.db.models.signals import post_save

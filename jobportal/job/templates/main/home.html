@@ -5,7 +5,7 @@
 
 {% block content %}
 
-
+<div class=" mb-30 border rounded">
     <main>
         <!-- slider Area Start-->
         <div class="slider-area ">
@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-9 col-md-10">
                                 <div class="hero__caption">
-                                    <h1 style="color: rgb(61, 61, 131);">Find the most exciting startup jobs</h1>
+                                    <h1 style="color:#ee5253; text-shadow: 4px 4px 10px black;">Find the most exciting startup jobs</h1>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="search-form">
                                         <!-- <a href="#">Find job</a> -->
-                                        <a href=""><input type="submit" value="Find Job" style="background-color: transparent; border: none; font-size: 19px;"></a>
+                                        <a href="" style="background-color: #ee5253;"><input type="submit" value="Find Job" style="background-color: transparent; border: none; font-size: 19px;"></a>
                                     </div>	
                                 </form>	
                             </div>
@@ -58,22 +58,22 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle text-center">
-                            <span>FEATURED Vacebcy</span>
+                            <span style="font-size: 20px;">FEATURED Vacebcy</span>
                             <h2>Total Vacney of Company </h2>
                         </div>
                     </div>
                 </div>
                 <div class="row d-flex justify-contnet-center">
                     {% for employer in employers %}
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30" style="background-color: rgb(191, 191, 237);" >
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 " >
+                        <div class="single-services text-center mb-30" style="background-color:#91ebc7; border-radius: 20px; box-shadow: 4px 4px 10px black inset;outline: 2px solid #00b372; outline-offset: 1px;" >
                             <!-- <div class="services-ion">
                                 <span class="flaticon-tour"></span>
                             </div> -->
                 
 
                             <div class="services-cap">
-                                <img src="{{employer.image.url}}" width="100" alt="" style="border: 1px solid rebeccapurple; margin-bottom: 12px;">
+                                <img src="{{employer.image.url}}" width="100" height="100" alt="" style="border: 1px solid #00b372; margin-bottom: 12px;">
                                <h5><a href="">{{ employer.company }}</a></h5>
 
                                 <span>Vacency: {{ employer.job_count }}</span>
@@ -81,88 +81,6 @@
                         </div>
                     </div>
                     {% endfor %}
-
-                   
-  
-
-
-                    <!-- <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-cms"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Design & Development</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-report"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Sales & Marketing</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-app"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Mobile Application</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-helmet"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Construction</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-high-tech"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Information Technology</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-real-estate"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Real Estate</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-services text-center mb-30">
-                            <div class="services-ion">
-                                <span class="flaticon-content"></span>
-                            </div>
-                            <div class="services-cap">
-                               <h5><a href="job_listing.html">Content Writer</a></h5>
-                                <span>(658)</span>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
                 <!-- More Btn -->
                 <!-- Section Button -->
@@ -198,7 +116,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle text-center">
-                            <span>Recent Job</span>
+                            <span style="font-size: 20px;">Recent Job</span>
                             <h2>Featured Jobs</h2>
                         </div>
                     </div>
@@ -207,31 +125,31 @@
                     <div class="col-xl-10">
                         <!-- single-job-content -->
                         {% for i in job %}
-                        <div class="single-job-items mb-30 border rounded">
+                        <div class="single-job-items mb-30 " >
                             <div class="job-items">
                                 <div class="company-img">
                                     <a href="#"><img src="{{i.image.url}}" alt="" width="100" height="100" style="border: 1px solid black; padding: 4px;"></a>
                         
                                 </div>
-                                <div class="job-tittle job-tittle2">
+                                <div class="job-tittle job-tittle2" style="padding-top:20px ;">
                                     <a href="#">
                                         <h4>{{i.title}}</h4>
                                     </a>
-                                    <ul>
-                                        <li>{{i.employers.company}}</li>
+                                    <ul style="margin: 0; padding: 0;">
+                                        <li><i class="fa-regular fa-building"></i>{{i.employers.company}}</li>
                                         <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
-                                        <li>{{i.job_type.job_type}}</li>
+                                        <li><i class="fa-regular fa-clock"></i>{{i.job_type.job_type}}</li>
                                     </ul>
                                 </div>
                             </div>
                             {% if request.user.is_authenticated %}
                             <div class="items-link items-link2 f-right">
                                 {% if i.id in list %}
-                                <a href="" style="color:white; background-color: rgb(238, 159, 94);">Applied</a>
+                                <a href="" style="color:white; background-color: #00b372;">Already Apply</a>
                                 {% else %}
                                 <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                 {% endif %}
-                                <span>Date Line: {{ i.end_date }}</span>
+                                <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
                             </div>
                             {% else %}
                             <div class="items-link items-link2 f-right">
@@ -297,7 +215,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle white-text text-center">
-                            <span>Apply process</span>
+                            <span style="font-size: 20px;">Apply process</span>
                             <h2> How it works</h2>
                         </div>
                     </div>
@@ -413,7 +331,7 @@
                         <div class="right-caption">
                             <!-- Section Tittle -->
                             <div class="section-tittle section-tittle2">
-                                <span>What we are doing</span>
+                                <span style="font-size: 20px;">What we are doing</span>
                                 <h2>24k Talented people are getting Jobs</h2>
                             </div>
                             <div class="support-caption">
@@ -443,7 +361,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle text-center">
-                            <span>Our latest blog</span>
+                            <span style="font-size: 20px;">Our latest blog</span>
                             <h2>Our recent news</h2>
                         </div>
                     </div>
@@ -494,7 +412,7 @@
 
     </main>
 
-
+</div>
 
 {% endblock %}
   

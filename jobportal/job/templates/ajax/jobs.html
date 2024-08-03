@@ -9,15 +9,16 @@
                         style="border: 1px solid black; padding: 4px;"></a>
 
             </div>
-            <div class="job-tittle job-tittle2">
+            <div class="job-tittle job-tittle2" style="padding-top:20px ;">
                 <a href="#">
                     <h4>{{i.title}}</h4>
                 </a>
                 <ul>
-                    <li>{{i.recruiter.company}}</li>
-                    <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
-                    <li>{{i.job_type.job_type}}</li>
-                </ul>
+                    <ul style="margin: 0; padding: 0;">
+                        <li><i class="fa-regular fa-building"></i>{{i.employers.company}}</li>
+                        <li><i class="fas fa-map-marker-alt"></i>{{i.location}}</li>
+                        <li><i class="fa-regular fa-clock"></i>{{i.job_type.job_type}}</li>
+                    </ul>
             </div>
         </div>
         <div class="items-link items-link2 f-right">
@@ -26,7 +27,7 @@
             {% else %}
             <a href="{% url 'job_details' i.id %}">Apply Now</a>
             {% endif %}
-            <span>Date Line: {{ i.end_date }}</span>
+            <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i> Date Line: {{ i.end_date }}</span>
 
         </div>
     </div>

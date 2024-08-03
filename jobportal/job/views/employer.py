@@ -15,6 +15,12 @@ from django.template.loader import render_to_string
 
 #! EMPLOYER _DASHBOARD
 def emp_dash(request):
+
+    employer = Employers.objects.get(user=request.user)
+    job = Job.objects.filter(employers=employer).order_by("-id")
+
+    data = Apply.objects.all().order_by("-id")
+  
     user = request.user
     try:
         employer = Employers.objects.get(user=user)
@@ -22,8 +28,10 @@ def emp_dash(request):
         employer = None
     context = {
         'employer': employer,
+        "data":data,
+        "job":job
     }
-    return render(request, "main/employer/base_home.html")
+    return render(request, "main/employer/base_home.html", context)
 
 #! EMPLOYER SIGNUP: =============================================
 def EMPLOYER_SIGNUP(request):
@@ -272,7 +280,7 @@ def edit_jobdetails(request, id):
         image= request.POST['image']
         
         job.des= request.POST['desc']
-        job.experience= request.POST['experience']
+        # job.experience= request.POST['experience']
         job.location= request.POST['location']
         job.skills= request.POST['skill']
         

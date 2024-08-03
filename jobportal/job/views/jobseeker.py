@@ -223,8 +223,8 @@ def SIGN_UP(request):
                     'gender':gender ,
                 } )
             
-            user = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
-            JobSeekers.objects.create(user=user, mobile=contact, image=image, gender=gender, is_student=True)
+            users = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
+            JobSeekers.objects.create(user=users, mobile=contact, image=image, gender=gender, is_student=True)
             messages.success(request, f'Registration successful, {firstname}! Welcome JobPortal')
             return redirect('user_login')
         

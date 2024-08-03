@@ -1,10 +1,11 @@
 
     .button {
-        --color: rgb(108, 108, 221);
+        --color: #00b372;
         padding: 0.3em 1.7em;
         background-color: transparent;
         border-radius: .3em;
         position: relative;
+        
         overflow: hidden;
         cursor: pointer;
         transition: .5s;
@@ -81,18 +82,18 @@
 
     .register i {
         font-size: 100px;
-        color: rgb(108, 108, 221);
+        color: #00b372;
     }
 
     .register h5 {
         font-size: 17px;
         margin: 13px 0;
-        color: rgb(108, 108, 221);
+        color: #00b372;
     }
 
     .register p {
         font-size: 17px;
         margin: 16px 0;
-        color: rgb(108, 108, 221);
+        color: #00b372;
     }
 
