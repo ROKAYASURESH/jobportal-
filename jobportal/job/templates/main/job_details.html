@@ -7,17 +7,17 @@
 
     <!-- Hero Area Start-->
     <div class="slider-area ">
-        <!-- <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/about.jpg' }">
+        <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="{{job.employers.image.url}}">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap text-center">
-                        <h2>UI/UX Designer</h2>
+                        <h2>{{job.title}}</h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     </div>
     <!-- Hero Area End -->
     <!-- job post company Start -->
@@ -27,7 +27,7 @@
                 <!-- Left Content -->
                 <div class="col-xl-7 col-lg-8">
                     <!-- job single -->
-                    <div class="single-job-items mb-50 border rounded">
+                    <div class="single-job-items mb-50 border rounded" style="width: 100%;">
                         <div class="job-items">
                             <div class="company-img company-img-details">
                                 <a href="#"><img src="{{job.employers.image.url}}" alt="" width="100"
@@ -104,10 +104,10 @@
                             <li>Salary : <span>₹{{job.salary}}</span></li>
                             <li>Application date : <span>{{job.end_date}}</span></li>
                         </ul>
-                        <div class="apply-btn2">
-                            <a href="{% url 'applyforjob' job.id %}" class="btn border-3 rounded">Apply Now</a>
+                        <div class="apply-btn2" style="display: flex; justify-content: center; gap: 15px;">
+                            <a href="{% url 'applyforjob' job.id %}" style="background-color:#00b372; padding: 6px 10px;">Apply Now</a>
                             {% if job not in saved_jobs %}
-                            <a href="{% url 'save_job_for_later' job.id %}" class="btn border-3 rounded">save for
+                            <a href="{% url 'save_job_for_later' job.id %}" style="background-color:#00b372; padding: 6px 10px;">save for
                                 later</a>
 
                             {% else %}

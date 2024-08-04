@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-xl-6 col-lg-9 col-md-10">
                                 <div class="hero__caption">
-                                    <h1 style="color:#ee5253; text-shadow: 4px 4px 10px black;">Find the most exciting startup jobs</h1>
+                                    <h1 style="color:#00b372; text-shadow: 6px 6px 20px black;">Find the most exciting startup jobs</h1>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="search-form">
                                         <!-- <a href="#">Find job</a> -->
-                                        <a href="" style="background-color: #ee5253;"><input type="submit" value="Find Job" style="background-color: transparent; border: none; font-size: 19px;"></a>
+                                        <a href="" style="background-color: #00b372;"><input type="submit" value="Find Job" style="background-color: transparent; border: none; font-size: 19px;"></a>
                                     </div>	
                                 </form>	
                             </div>
@@ -154,6 +154,8 @@
                             {% else %}
                             <div class="items-link items-link2 f-right">
                                 <a href="{% url 'user_login' %}">Apply Now</a>
+                                <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
+
                             </div>
                             {% endif %}
                         </div>

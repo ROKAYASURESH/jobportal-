@@ -35,9 +35,9 @@ def JOB_USER(request):
 #! JOBSEEKER HOME PAGE: ========================
 from django.db.models import Count
 def HOME(request):
-    employers = Employers.objects.annotate(job_count=Count('job')).all()
+    employers = Employers.objects.annotate(job_count=Count('job')).all().order_by('-id')[:8]
     user = request.user
-    job = Job.objects.all()
+    job = Job.objects.all().order_by('-id')
 
     paginator=Paginator(job, 4) #number of items to display per page
     page_num=request.GET.get('page') #current page /127.0.0.1:8000/?page=1
@@ -75,12 +75,12 @@ def JOB(request):
     #     return redirect('user_login')
     
     user = request.user
-    job_type = Job_type.objects.all()
-    label = Experience.objects.all()
-    jobs = Job.objects.all()
+    job_type = Job_type.objects.all().order_by('-id')
+    label = Experience.objects.all().order_by('-id')
+    jobs = Job.objects.all().order_by('-id')
     job =Job.objects.all().count()
 
-    paginator=Paginator(jobs, 4) #number of items to display per page
+    paginator=Paginator(jobs, 5) #number of items to display per page
     page_num=request.GET.get('page') #current page /127.0.0.1:8000/?page=1
     jobs=paginator.get_page(page_num)#fetch the data from current page
     total=jobs.paginator.num_pages #3

@@ -265,31 +265,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="single-listing">
-                            <!-- Range Slider Start -->
-                            <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
-                                <div class="small-section-tittle2">
-                                    <h4>Filter Jobs</h4>
-                                </div>
-                                <div class="widgets_inner">
-                                    <div class="range_item">
-                                        <!-- <div id="slider-range"></div> -->
-                                        <input type="text" class="js-range-slider" value="" />
-                                        <div class="d-flex align-items-center">
-                                            <div class="price_text">
-                                                <p>Price :</p>
-                                            </div>
-                                            <div class="price_value d-flex justify-content-center">
-                                                <input type="text" class="js-input-from" id="amount" readonly />
-                                                <span>to</span>
-                                                <input type="text" class="js-input-to" id="amount" readonly />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </aside>
-                            <!-- Range Slider End -->
-                        </div>
+                        
                     </div>
                     <!-- Job Category Listing End -->
                 </div>
@@ -317,7 +293,7 @@
                                         <form class="d-flex" method="get" role="search" action="{% url 'search_job'%}">
                                             
                                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
-                                            <button class="btn btn-outline-success" type="submit">Search</button>
+                                            <button class="" type="submit" style="border: none; padding: 2px 10px; border-radius: 10px; color: white; background-color: #00b372;">Search</button>
                                           </form>
                                         <!--  Select job items End-->
                                     </div>
@@ -346,20 +322,21 @@
                                     </div>
                                 </div>
                                 {% if request.user.is_authenticated %}
-                                <div class="items-link items-link2 f-right">
-                                    {% if i.id in list %}
-                                    <a href="" class="btn-success" style="color:white; background-color: #00b372;">Already Apply</a>
-                                    {% else %}
-                                    <a href="{% url 'job_details' i.id %}">Apply Now</a>
-                                    {% endif %}
-                                    <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
-
-                                </div>
+                            <div class="items-link items-link2 f-right">
+                                {% if i.id in list %}
+                                <a href="" style="color:white; background-color: #00b372;">Already Apply</a>
                                 {% else %}
-                                <div class="items-link items-link2 f-right">
-                                    <a href="{% url 'user_login' %}">Apply Now</a>
-                                </div>
+                                <a href="{% url 'job_details' i.id %}">Apply Now</a>
                                 {% endif %}
+                                <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
+                            </div>
+                            {% else %}
+                            <div class="items-link items-link2 f-right">
+                                <a href="{% url 'user_login' %}">Apply Now</a>
+                                <span><i class="fa-solid fa-calendar-days" style="color: #00b372; margin-right: 6px;"></i>Date Line: {{ i.end_date }}</span>
+
+                            </div>
+                            {% endif %}
                             </div>
                             {% endfor %}
                             <!-- single-job-content -->
