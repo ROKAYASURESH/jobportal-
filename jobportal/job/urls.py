@@ -21,6 +21,7 @@ urlpatterns = [
     path('about/', ABOUT, name='about'),
     path('contact/', CONTACT, name='contact'),
     path('job_details/<int:id>', JOB_DETAILS, name='job_details'),
+    path('company_details/<int:id>', copmany, name='company_details'),
     path('applyforjob/<int:id>',  apply, name='applyforjob'),
     path('save_job_for_later/<int:job_id>/', save_job_for_later, name='save_job_for_later'),
     path('saved_jobs/', saved_jobs_view, name='saved_jobs_view'),

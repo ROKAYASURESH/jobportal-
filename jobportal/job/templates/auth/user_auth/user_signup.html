@@ -7,8 +7,11 @@
 <link rel="stylesheet" href="{% static 'page/login_register.css' %}">
 {% endblock %}
 
-<section class="containers container my-5">
-  <header>JOB SEEKERS REGISTRATION</header>
+<div class="auth_background" style="background-image: url('https://png.pngtree.com/background/20220714/original/pngtree-simple-blue-technology-banner-background-material-picture-image_1616963.jpg'); background-size: cover; background-repeat: no-repeat;">
+
+<section class="containers container mb-5 mt-2">
+  <header><h1>JOB SEEKERS REGISTRATION</h1></header>
+  <div class="box" ></div>
   <form class="form" onsubmit="return checkpass()" method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="column">
@@ -51,7 +54,7 @@
 
     <div class="column ">
       <div class="gender-box">
-        <h3>Gender</h3>
+        <label>Gender</label>
         <div class="gender-option">
           <div class="gender">
             <input type="radio" id="check-male" name="gender" value="Male" checked />
@@ -77,5 +80,5 @@
     <button type="submit">Submit</button>
   </form>
 </section>
-
+</div>
 {% endblock %}

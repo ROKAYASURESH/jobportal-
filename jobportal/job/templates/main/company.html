@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+{% block title%}Company Detail{% endblock %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<style>
+    .hero {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 5rem 1rem;
+    text-align: center;
+}
+
+.hero-logo {
+    max-width: 150px;
+    border-radius: 50%;
+}
+
+.hero-title {
+    font-size: 3rem;
+    margin: 0.5rem 0;
+}
+
+.hero-tagline {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.company-detail {
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #2575fc;
+    padding-bottom: 0.5rem;
+}
+
+.card a {
+    color: #2575fc;
+    text-decoration: none;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+.company-social {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.soc{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: white !;
+}
+.soc a{
+    color: white;
+}
+
+.social-icon {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.social-icon.facebook {
+    background: #3b5998;
+}
+
+.social-icon.twitter {
+    background: #1da1f2;
+}
+
+.social-icon.linkedin {
+    background: #0077b5;
+}
+
+</style>
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <img src="{{ company.image.url }}" alt="{{ company.name }} Logo" class="hero-logo">
+            <h1 class="hero-title">{{ company.company }}</h1>
+            <p class="hero-tagline">{{ company.tagline }}</p>
+        </div>
+    </section>
+    <section class="company-detail">
+        <div class="container">
+            <div class="company-info card">
+                <h2>About Us</h2>
+                <p>{{ company.company_des }}</p>
+            </div>
+            <div class="company-contact card">
+                <h2>Contact Information</h2>
+                <p><strong>Founder:</strong> {{ company.user.first_name }} {{company.user.last_name}}</p>
+                <p><strong>Phone:</strong> {{ company.mobile }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ company.employers.user.username }}">{{ company.user.username }}</a></p>
+                <p><strong>Website:</strong> <a href="{{ company.web}}" target="_blank">{{ company.web }}</a></p>
+            </div>
+            <div class="company-social card">
+                <h2>Follow Us</h2>
+                <div class="soc">
+                    <a href="{{ company.facebook }}" target="_blank" class="social-icon facebook">Facebook</a>
+                <a href="{{ company.twitter }}" target="_blank" class="social-icon twitter">Twitter</a>
+                <a href="{{ company.linkedin }}" target="_blank" class="social-icon linkedin">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+  

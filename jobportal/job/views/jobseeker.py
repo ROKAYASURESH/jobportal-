@@ -67,6 +67,18 @@ def HOME(request):
     }
     return render(request, 'main/home.html', context)
 
+# ! Comapay
+
+def copmany(request, id):
+    company=Employers.objects.get(id=id)
+
+    return render(request, 'main/company.html', {
+        'company': company,
+       
+    })
+
+
+
 #! JOBSEEKER FIND_JOB PAGE: =======================
 from django.core.paginator import Paginator
 
