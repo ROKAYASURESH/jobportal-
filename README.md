@@ -29,7 +29,7 @@ A job portal developed with Django connects job seekers with employers. The plat
 2. **Create a own virtual environment**
     ```bash
     python -m venv my_env
-    source venv/bin/activate   # On Windows use `./my_env/Scripts/activate`
+    source ./my_env/Scripts/activate   # On Windows use `./my_env/Scripts/activate`
     ```
 
 3. **Install dependencies**
