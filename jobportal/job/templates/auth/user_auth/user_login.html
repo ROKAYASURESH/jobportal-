@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="{% static 'page/login_register.css' %}">
 
 {% endblock %}
-
+<style>
+  
+</style>
 
 <div class="auth_background" style="background-image: url(https://png.pngtree.com/background/20211215/original/pngtree-technology-light-effect-blue-purple-technology-wind-picture-image_1473694.jpg); background-size: cover; background-repeat: no-repeat;">
 <section class="containers container py-5 my-4" >
@@ -19,12 +21,14 @@
 
     <div class="input-box">
       <label>Email</label>
-      <input type="email" name="username" placeholder="Enter Email Address" required />
+      <input type="email" name="username" value="{{email|default_if_none:''}}" placeholder="Enter Email Address" required />
     </div>
 
     <div class="input-box">
       <label>password</label>
-      <input type="password" name="password" placeholder="Enter User Password" required />
+      <input type="password" id="pass" name="password"  placeholder="Enter User Password" required />
+      <a class="button" onclick="abc()"> <i class="fas fa-eye"></i></a>
+     
     </div>
 
 

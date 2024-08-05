@@ -1,7 +1,25 @@
 
   /* Import Google font - Poppins */
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+  .input-box {
+    position: relative;
+    width: 100%;
+}
 
+.input-box input[type="password"] {
+    width: 100%;
+    padding-right: 50px; /* Adjust this based on button width */
+}
+
+.input-box .button,  .input-box .buttons {
+    position: absolute;
+    right: 10px;
+    top: 70%;
+    transform: translateY(-40%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
  
   label{
     font-size: 20px;

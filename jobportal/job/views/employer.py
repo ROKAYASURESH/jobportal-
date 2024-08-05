@@ -127,6 +127,11 @@ def EMPLOYER_LOGIN(request):
                    messages.error(request, "Your Status is currently pending !!")
             except:
                 messages.error(request, 'Invalid username or password.')
+        else:
+            messages.error(request, 'Invalid username or password.')
+            return render(request, 'auth/employer/employer_login.html', {
+                    'username': username,
+                } )
     return render(request, 'auth/employer/employer_login.html')
 
 #! EMPLOYER LOGOUT: ===================================================

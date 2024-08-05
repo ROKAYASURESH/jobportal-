@@ -263,14 +263,20 @@ def USER_LOGIN(request):
 
                 else:
                     messages.error(request, 'Invalid username or password.')
-                    return redirect('user_login')
+                    return render(request, 'auth/user_auth/user_login.html', {
+                    'email': username,
+                } )
 
             except:
                 messages.error(request, 'Invalid username or password.')
-                return redirect('user_login')
+                return render(request, 'auth/user_auth/user_login.html', {
+                    'email': username,
+                } )
         else:
             messages.error(request, 'Invalid username or password.')
-            return redirect('user_login')
+            return render(request, 'auth/user_auth/user_login.html', {
+                    'email': username,
+                } )
     return render(request, 'auth/user_auth/user_login.html')
 
 #! JOBSEEKER LOGOUT: ==================================================

@@ -27,12 +27,34 @@
           required />
       </div>
     </div>
+    <div class="input-box">
+      <label>Profile Image</label>
+      <input type="file" name="image" required />
+    </div>
 
     <div class="input-box">
       <label>Contact</label>
       <input type="number" name="contact" value="{{contact|default_if_none:''}}" placeholder="Enter Contact Number"
         required />
     </div>
+    <div class="gender-box">
+      <label>Gender</label>
+      <div class="gender-option">
+        <div class="gender">
+          <input type="radio" id="check-male" name="gender" value="Male" checked />
+          <label for="check-male">male</label>
+        </div>
+        <div class="gender">
+          <input type="radio" id="check-female" value="Female" name="gender" />
+          <label for="check-female">Female</label>
+        </div>
+        <div class="gender">
+          <input type="radio" id="check-other" value="Other" name="gender" />
+          <label for="check-other">other</label>
+        </div>
+      </div>
+    </div>
+
 
     <div class="input-box">
       <label>Email Address</label>
@@ -43,39 +65,18 @@
     <div class="column">
       <div class="input-box">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required />
+        <input type="password" id="pass" name="password" placeholder="Enter password" required />
+        <a class="button" onclick="abc()"><i class="fas fa-eye"></i></a>
       </div>
 
       <div class="input-box">
         <label>Confirm_password</label>
-        <input type="password" name="confirm_password" placeholder="Enter confirm_password" required />
+        <input type="password" id="passw" name="confirm_password" placeholder="Enter confirm_password" required />
+        <a class="buttons" onclick="abcd()"><i class="fas fa-eye"></i></a>
+
       </div>
     </div>
 
-    <div class="column ">
-      <div class="gender-box">
-        <label>Gender</label>
-        <div class="gender-option">
-          <div class="gender">
-            <input type="radio" id="check-male" name="gender" value="Male" checked />
-            <label for="check-male">male</label>
-          </div>
-          <div class="gender">
-            <input type="radio" id="check-female" value="Female" name="gender" />
-            <label for="check-female">Female</label>
-          </div>
-          <div class="gender">
-            <input type="radio" id="check-other" value="Other" name="gender" />
-            <label for="check-other">other</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="input-box">
-        <label>Profile Image</label>
-        <input type="file" name="image" required />
-      </div>
-    </div>
 
     <button type="submit">Submit</button>
   </form>

@@ -26,16 +26,21 @@
           required />
       </div>
     </div>
+    <div class="input-box">
+      <label>Profile Image</label>
+      <input type="file" value="{{image|default_if_none:''}}" name="image" required />
+    </div>
 
     <div class="column">
+     
+      <div class="input-box">
+        <label>Company</label>
+        <input type="text" name="company" value="{{company|default_if_none:''}}" placeholder="Enter Company" required />
+      </div>
       <div class="input-box">
         <label>Contact</label>
         <input type="number" name="contact" value="{{contact|default_if_none:''}}" placeholder="Enter Contact Number"
           required />
-      </div>
-      <div class="input-box">
-        <label>Company</label>
-        <input type="text" name="company" value="{{company|default_if_none:''}}" placeholder="Enter Company" required />
       </div>
     </div>
     <div class="input-box">
@@ -47,23 +52,16 @@
     <div class="column">
       <div class="input-box">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required />
+        <input type="password" id="pass" name="password" placeholder="Enter password" required />
+        <a class="button" onclick="abc()"><i class="fas fa-eye"></i></a>
       </div>
 
       <div class="input-box">
         <label>Confirm_password</label>
-        <input type="password" name="confirm_password" placeholder="Enter confirm_password" required />
+        <input type="password" id="passw" name="confirm_password" placeholder="Enter confirm_password" required />
+        <a class="buttons" onclick="abcd()"><i class="fas fa-eye"></i></a>
       </div>
     </div>
-
- 
-     
-      <div class="input-box">
-        <label>Profile Image</label>
-        <input type="file" value="{{image|default_if_none:''}}" name="image" required />
-      </div>
- 
-
     <button type="submit">Submit</button>
   </form>
 </section>
