@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify OTP</title>
+</head>
+<body>
+    <h2>Verify OTP</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="otp_code">Enter OTP:</label>
+        <input type="text" name="otp_code" id="otp_code" required>
+        <button type="submit">Verify OTP</button>
+    </form>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</body>
+</html>

@@ -3,15 +3,33 @@ from datetime import date
 from django.contrib.auth.models import User
 
 #! JOBSEEKERS: =================================
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
+import datetime
+import random
+
 class JobSeekers(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
-    mobile=models.CharField(max_length=15, null= True)
-    image=models.ImageField(null=True, upload_to='user_profile')
-    gender=models.CharField(max_length=10, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mobile = models.CharField(max_length=15, null=True)
+    image = models.ImageField(null=True, upload_to='user_profile')
+    gender = models.CharField(max_length=10, null=True)
     is_student = models.BooleanField(default=False)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.user.username
+
+class OTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def is_valid(self):
+        now = datetime.datetime.now(datetime.timezone.utc)
+        diff = now - self.created_at
+        return diff.total_seconds() < 300  # 5 minutes validity
+
 #! EMPLOYERS: ==================================================   
 class Employers(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)

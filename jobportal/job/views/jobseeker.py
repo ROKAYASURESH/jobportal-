@@ -202,6 +202,26 @@ def JOB_DETAILS(request, id):
    =================================================================
 '''
 #! JOBSEEKER SIGNUP:==============================
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
+from job.models import JobSeekers, OTP
+import random
+
+def send_otp_email(user, otp_code):
+    subject = 'Your OTP Code'
+    message = f'Use the following OTP code to complete your registration: {otp_code}'
+    from_email = 'your-email@example.com'
+    recipient_list = [user.username]
+    send_mail(subject, message, from_email, recipient_list)
+
+def generate_otp():
+    return ''.join([str(random.randint(0, 9)) for _ in range(6)])
+
 def SIGN_UP(request):
     if request.method == "POST" and request.FILES:
         firstname = request.POST['first_name']
@@ -214,7 +234,7 @@ def SIGN_UP(request):
         gender = request.POST['gender']
 
         try:
-            validate_password(password)            
+            validate_password(password)
             if password != confirm_password:
                 messages.error(request, "Passwords do not match!")
                 return render(request, 'auth/user_auth/user_signup.html', {
@@ -222,9 +242,9 @@ def SIGN_UP(request):
                     'lastname': lastname,
                     'email': email,
                     'contact': contact,
-                    'gender':gender ,
-                } )
-            
+                    'gender': gender,
+                })
+
             if User.objects.filter(username=email).exists():
                 messages.error(request, "Email already exists!")
                 return render(request, 'auth/user_auth/user_signup.html', {
@@ -232,20 +252,65 @@ def SIGN_UP(request):
                     'lastname': lastname,
                     'email': email,
                     'contact': contact,
-                    'gender':gender ,
-                } )
-            
+                    'gender': gender,
+                })
+
             users = User.objects.create_user(first_name=firstname, last_name=lastname, username=email, password=password)
-            JobSeekers.objects.create(user=users, mobile=contact, image=image, gender=gender, is_student=True)
-            messages.success(request, f'Registration successful, {firstname}! Welcome JobPortal')
-            return redirect('user_login')
-        
+            otp_code = generate_otp()
+            OTP.objects.create(user=users, code=otp_code)
+            send_otp_email(users, otp_code)
+
+            request.session['pending_user_id'] = users.id
+            request.session['pending_user_data'] = {
+                'mobile': contact,
+                'image': image.name,  # Store image filename
+                'gender': gender,
+                'is_student': True
+            }
+            messages.success(request, f'An OTP has been sent to {email}. Please verify to complete registration.')
+            return redirect('verify_otp')
+
         except ValidationError as e:
             for error in e.messages:
                 messages.error(request, error)
             return redirect('user_signup')
 
     return render(request, 'auth/user_auth/user_signup.html')
+
+def verify_otp(request):
+    if request.method == "POST":
+        otp_code = request.POST['otp_code']
+        user_id = request.session.get('pending_user_id')
+        pending_user_data = request.session.get('pending_user_data')
+        
+        if user_id and pending_user_data:
+            user = User.objects.get(id=user_id)
+            otp = OTP.objects.filter(user=user, code=otp_code).first()
+
+            if otp and otp.is_valid():
+                otp.is_verified = True
+                otp.save()
+                
+                # Create JobSeekers object
+                JobSeekers.objects.create(
+                    user=user, 
+                    mobile=pending_user_data['mobile'], 
+                    image=pending_user_data['image'], 
+                    gender=pending_user_data['gender'], 
+                    is_student=pending_user_data['is_student']
+                )
+                
+                # Clear session data
+                del request.session['pending_user_id']
+                del request.session['pending_user_data']
+                
+                messages.success(request, f'Registration successful, {user.first_name}! Welcome to JobPortal')
+                return redirect('user_login')
+            else:
+                messages.error(request, 'Invalid or expired OTP. Please try again.')
+                return redirect('verify_otp')
+
+    return render(request, 'auth/user_auth/verify_otp.html')
 
 #! JOBSEEKER LOGIN: ==============================================
 def USER_LOGIN(request):

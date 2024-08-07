@@ -27,7 +27,8 @@ urlpatterns = [
     path('saved_jobs/', saved_jobs_view, name='saved_jobs_view'),
     # JOBSEEKER AUTHENTICAION
     path('search',SEARCH_JOB,name='search_job'),
-    path('user_signup/',  SIGN_UP, name='user_signup'),
+    path('user_signup/', SIGN_UP, name='user_signup'),
+    path('verify_otp/', verify_otp, name='verify_otp'),
     path('user_login/',  USER_LOGIN, name='user_login'),
     path('logout/',  USER_LOGOUT, name='logout'),
      path('user/profile/', user_profile, name='user_profile'),
