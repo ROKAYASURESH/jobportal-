@@ -14,6 +14,10 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 
+from django.core.mail import send_mail
+import random
+
+
 @login_required
 def notifications_view(request):
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
@@ -203,14 +207,7 @@ def JOB_DETAILS(request, id):
 '''
 #! JOBSEEKER SIGNUP:==============================
 # views.py
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.contrib.auth.password_validation import validate_password
-from job.models import JobSeekers, OTP
-import random
+
 
 def send_otp_email(user, otp_code):
     subject = 'Your OTP Code'

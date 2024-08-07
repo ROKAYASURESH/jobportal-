@@ -1,18 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Verify OTP</title>
-</head>
-<body>
-    <h2>Verify OTP</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="otp_code">Enter OTP:</label>
-        <input type="text" name="otp_code" id="otp_code" required>
-        <button type="submit">Verify OTP</button>
-    </form>
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends 'base/base.html' %}
+{% block title%}register{% endblock %}
+{% load static %}
+
+{% block content %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'page/login_register.css' %}">
+{% endblock %}
+
+<div class="auth_background" style="background-image: url('https://png.pngtree.com/background/20220714/original/pngtree-simple-blue-technology-banner-background-material-picture-image_1616963.jpg'); background-size: cover; background-repeat: no-repeat;">
+
+<section class="containers container mb-5 mt-2">
+  <header><h1>Verify OTP</h1></header>
+  <div class="box" ></div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="input-box">
+    <label for="otp_code">Enter OTP:</label>
+    <input type="text" name="otp_code" id="otp_code" required>
+    </div>
+    <button type="submit" style="border: none; color: #f4efef; background-color: blue;">Verify OTP</button>
+</form>
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+</section>
+</div>
+{% endblock %}

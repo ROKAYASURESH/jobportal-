@@ -1,14 +1,10 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
-
-#! JOBSEEKERS: =================================
-# models.py
-from django.db import models
-from django.contrib.auth.models import User
 import datetime
 import random
 
+#! JOBSEEKERS: =================================
 class JobSeekers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mobile = models.CharField(max_length=15, null=True)
@@ -18,7 +14,7 @@ class JobSeekers(models.Model):
 
     def __str__(self):
         return self.user.username
-
+# ! For OTP code
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.CharField(max_length=6)
