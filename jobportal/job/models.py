@@ -136,6 +136,7 @@ def send_job_notification(sender, instance, created, **kwargs):
 class Apply(models.Model):
     job=models.ForeignKey(Job, on_delete=models.CASCADE)
     student=models.ForeignKey(JobSeekers, on_delete=models.CASCADE)
+    status=models.CharField(max_length=20, null=True)
     cv=models.FileField(null=True)
     applydate=models.DateField()
 

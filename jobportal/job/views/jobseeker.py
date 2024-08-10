@@ -435,3 +435,48 @@ def saved_jobs_view(request):
         'saved_jobs': saved_jobs
     })
    
+def select_candidates(request, id):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+   
+    jobseeker = Apply.objects.get(id=id)
+    if request.method == "POST":
+        status = request.POST['status']
+        jobseeker.status = status
+        try:
+            jobseeker.save()
+            
+            # Only send the email if the status is "Select"
+            if status == "Select":
+                user_subject = f"Congratulations! You've Been Selected for the {jobseeker.job.title} Position !"
+                user_message = (
+                    f"Dear {jobseeker.student.user.first_name},\n\n"
+                    f"We are excited to inform you that you have been selected for the {jobseeker.job.title} position at {jobseeker.job.employers.company}. "
+                    "After careful consideration of your application and interview, we believe you are the perfect fit for our team.\n \n"
+
+                    " Next Steps:  \n"
+                    "\t i) Please reply to this email confirming your acceptance of the offer. \n"
+                    "\t ii) We will send you additional details regarding your start date, onboarding process, and other relevant information.\n\n"
+                    "If you have any questions or need further information, please don't hesitate to reach out. We're looking forward to having you join our team! \n\n"
+
+                   f"Congratulations once again, and welcome {jobseeker.job.employers.company} !\n \n"
+               '''Best regards,\n'''
+                f"{jobseeker.job.employers.user.first_name} {jobseeker.job.employers.user.last_name} \n"
+                f"Companay: {jobseeker.job.employers.company} \n"
+                f"Contact: {jobseeker.job.employers.mobile}"
+
+                    )
+                from_email = 'noreply@jobportal.com'  # Use a valid sender email address
+                to_user = [jobseeker.student.user.username]
+
+                send_mail(user_subject, user_message, from_email, to_user)
+
+            messages.success(request, f'Your candidate status was {status}.')
+            return redirect('candidatelist')
+        except Exception as e:
+            messages.error(request, f'Something went wrong, please try again! Error: {e}')
+    
+    context = {
+        'jobseeker': jobseeker,
+    }
+    return render(request, "main/select_candidate.html", context)

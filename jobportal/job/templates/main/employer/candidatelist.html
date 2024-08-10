@@ -8,6 +8,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 {% endblock %}
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
@@ -25,24 +26,36 @@
                        <th>Company</th>
                        <th>Apply Date</th>
                        <th>Resume</th>
+                       <th>Status</th>
                       
                    </tr>
                </thead>
                <tbody>
-                {% if request.user.id == i.job.employer.user.id %}
                 {% for i in data %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
-                    <td>{{ i.student.user.username }}</td>
-                    <td>{{ i.student.mobile }}</td>
-                    <td>{{ i.job.title }}</td>
-                    <td>{{ i.job.recruiter.company }}</td>
-                    <td>{{ i.applydate }}</td>
-                    <td><a href="{{ i.cv.url }}">Download Resumen</a></td>
-                </tr>
+                {% if request.user.id == i.job.employers.user.id %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.student.user.first_name }} {{ i.student.user.last_name }}</td>
+                        <td>{{ i.student.user.username }}</td>
+                        <td>{{ i.student.mobile }}</td>
+                        <td>{{ i.job.title }}</td>
+                        <td>{{ i.job.employers.company }}</td>
+                        <td>{{ i.applydate }}</td>
+                        <td><a href="{{ i.cv.url }}">Download Resume</a></td>
+                        <td>
+                            {% if i.status == "Select" %}
+                                <!-- Display the selected icon -->
+                                <span class="selected-icon">
+                                   <a href="{% url 'select_candidate' i.id %}" style="font-size: 20px; color: green;"> <i class="fa fa-check" aria-hidden="true"></i></a> <!-- You can use Font Awesome or any other icon library -->
+                                </span>
+                            {% else %}
+                                <!-- Display the "Select" link -->
+                                <a href="{% url 'select_candidate' i.id %}">Select</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-            {% endif %}
             
                </tbody>
            </table>

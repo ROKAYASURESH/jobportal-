@@ -72,6 +72,7 @@ urlpatterns = [
     path('employer_all',  employer_all, name='employer_all'),
     path('delete_employer<int:id>',  DELETE_EMPLOYER, name='delete_employer'),
     
+    path('select_candidate/<int:id>',  select_candidates, name='select_candidate'),
     
 
 
